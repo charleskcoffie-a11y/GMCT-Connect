@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ContentService } from '../services/api';
 import { SundayService } from '../types';
-import { PageHeader, LoadingScreen, Card } from '../components/UI';
-import { Calendar, User, Book } from 'lucide-react';
+import { PageHeader, LoadingScreen, Card, Badge } from '../components/UI';
+import { Calendar, User, Book, Music } from 'lucide-react';
 
 const ServiceList: React.FC = () => {
   const [services, setServices] = useState<SundayService[]>([]);
@@ -21,47 +21,62 @@ const ServiceList: React.FC = () => {
     <div>
       <PageHeader title="Sunday Services" />
       <div className="space-y-6">
-        {services.map((service, index) => (
-            <Card key={service.id} className="p-6 relative overflow-hidden">
-                <div className={`absolute left-0 top-0 bottom-0 w-1 ${index === 0 ? 'bg-brand-500' : 'bg-gray-300'}`}></div>
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                    <div className="flex-1">
-                        <div className="text-sm font-bold text-gray-500 mb-1">
-                            {new Date(service.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+        {services.map((service, index) => {
+            const isNext = index === 0;
+            // Highlight upcoming service with Brand Blue, others neutral
+            return (
+                <Card key={service.id} className={`p-0 overflow-hidden border-l-[6px] ${isNext ? 'border-l-brand-600 shadow-md' : 'border-l-gray-300 dark:border-l-gray-600'}`}>
+                    <div className="p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-2 text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <Calendar className="w-4 h-4" />
+                                {new Date(service.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                            </div>
+                            {isNext && <Badge color="blue">Upcoming</Badge>}
                         </div>
-                        <h2 className="text-xl font-bold text-gray-900 mb-2">{service.theme}</h2>
-                        <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                            <div className="flex items-start gap-2">
-                                <User className="w-4 h-4 text-gray-400 mt-0.5" />
+                        <h2 className="text-2xl font-bold text-brand-900 dark:text-white mb-2">{service.theme}</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-base leading-relaxed">{service.description}</p>
+                        
+                        <div className="bg-brand-50 dark:bg-slate-800/50 rounded-xl p-4 md:p-5 grid grid-cols-1 md:grid-cols-2 gap-6 border border-brand-100 dark:border-brand-800">
+                            <div className="flex items-start gap-3">
+                                <div className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-full text-brand-600 dark:text-brand-400">
+                                    <User className="w-4 h-4" />
+                                </div>
                                 <div>
-                                    <span className="font-semibold block text-gray-700">Preacher</span>
-                                    <span className="text-gray-600">{service.preacher}</span>
+                                    <span className="text-xs font-bold text-gray-400 uppercase block mb-1">Preacher</span>
+                                    <span className="text-gray-900 dark:text-white font-medium block">{service.preacher}</span>
                                 </div>
                             </div>
-                            <div className="flex items-start gap-2">
-                                <Book className="w-4 h-4 text-gray-400 mt-0.5" />
+                            <div className="flex items-start gap-3">
+                                <div className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-full text-brand-600 dark:text-brand-400">
+                                    <Book className="w-4 h-4" />
+                                </div>
                                 <div>
-                                    <span className="font-semibold block text-gray-700">Readings</span>
-                                    <ul className="text-gray-600 list-disc list-inside">
+                                    <span className="text-xs font-bold text-gray-400 uppercase block mb-1">Scripture Readings</span>
+                                    <ul className="text-gray-900 dark:text-white font-medium space-y-1">
                                         {service.readings.map(r => <li key={r}>{r}</li>)}
                                     </ul>
                                 </div>
                             </div>
                         </div>
+
+                        {service.hymns && (
+                            <div className="mt-5 flex items-center gap-3">
+                                <Music className="w-4 h-4 text-gray-400" />
+                                <div className="flex flex-wrap gap-2">
+                                    {service.hymns.map(h => (
+                                        <span key={h} className="inline-block bg-white dark:bg-slate-700 border border-gray-200 dark:border-slate-600 text-gray-700 dark:text-gray-200 text-xs font-semibold px-2.5 py-1 rounded-md">
+                                            {h}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
-                {service.hymns && (
-                    <div className="mt-6 pt-4 border-t border-gray-100">
-                        <span className="text-xs font-bold text-gray-500 uppercase mr-2">Hymns:</span>
-                        {service.hymns.map(h => (
-                            <span key={h} className="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded mr-2 mb-1">{h}</span>
-                        ))}
-                    </div>
-                )}
-            </Card>
-        ))}
+                </Card>
+            );
+        })}
       </div>
     </div>
   );

@@ -2,11 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#F5F7FB">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>ChurchConnect</title>
+    <title>GMCT Connect</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +14,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           fontFamily: {
             sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
@@ -21,14 +22,47 @@
           },
           extend: {
             colors: {
+              // GMCT Brand Palette
+              app: {
+                bg: '#F5F7FB',       // Light Mode Background
+                darkBg: '#0B1120',   // Dark Mode Background
+                card: '#FFFFFF',     // Card Background
+                darkCard: '#1E293B', // Dark Card
+                text: '#1C1C1E',     // Primary Text
+                subtext: '#6B7280',  // Secondary Text
+                border: '#E5E7EB',   // Dividers
+                darkBorder: '#334155'
+              },
               brand: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                900: '#0c4a6e',
-              }
+                50: '#EAF0FF', // Soft Sky (Backgrounds)
+                100: '#D4E0FF',
+                200: '#A8C1FF',
+                300: '#7DA2FF',
+                400: '#5183FF',
+                500: '#2664FF',
+                600: '#1F4FD8', // GMCT Blue (Primary Buttons/Active)
+                700: '#173CA3',
+                800: '#10296E',
+                900: '#0B1F4B', // Navy (Headers/Admin)
+              },
+              accent: {
+                50: '#FFFEF0',
+                100: '#FFFBC2',
+                200: '#FFF085',
+                300: '#FFE047',
+                400: '#FACC15',
+                500: '#F2B705', // GMCT Gold (Worship/Devotion)
+                600: '#C29204',
+                700: '#916D03',
+              },
+              // Status Colors
+              success: { 50: '#f0fdf4', 500: '#22c55e', 700: '#15803d' },
+              warning: { 50: '#fffbeb', 500: '#f59e0b', 700: '#b45309' },
+              error:   { 50: '#fef2f2', 500: '#dc2626', 700: '#b91c1c' },
+            },
+            boxShadow: {
+              'native': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+              'native-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04)',
             }
           }
         }
@@ -62,6 +96,10 @@
       * {
         -webkit-tap-highlight-color: transparent;
       }
+      body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
     </style>
   <script type="importmap">
 {
@@ -79,7 +117,7 @@
 }
 </script>
 </head>
-  <body class="bg-gray-50 text-gray-900 font-sans antialiased overflow-hidden selection:bg-brand-100 selection:text-brand-900">
+  <body class="bg-app-bg text-app-text dark:bg-app-darkBg dark:text-app-darkText font-sans antialiased overflow-hidden selection:bg-brand-100 selection:text-brand-900 transition-colors duration-200">
     <div id="root"></div>
   </body>
 </html>

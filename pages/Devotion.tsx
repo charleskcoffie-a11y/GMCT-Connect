@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ContentService } from '../services/api';
 import { Devotion } from '../types';
 import { PageHeader, LoadingScreen, Button, Card } from '../components/UI';
-import { Sparkles, Archive, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, ChevronDown, ChevronUp, Share2, BookOpen } from 'lucide-react';
 
 const DevotionPage: React.FC = () => {
   const [devotions, setDevotions] = useState<Devotion[]>([]);
@@ -14,6 +14,8 @@ const DevotionPage: React.FC = () => {
     ContentService.getDevotions().then(data => {
       setDevotions(data);
       setLoading(false);
+      // Auto expand first one
+      if (data.length > 0) setExpandedId(data[0].id);
     });
   }, []);
 
@@ -22,6 +24,7 @@ const DevotionPage: React.FC = () => {
     try {
       const newDevotion = await ContentService.generateDevotion();
       setDevotions([newDevotion, ...devotions]);
+      setExpandedId(newDevotion.id);
       window.scrollTo(0,0);
     } finally {
       setGenerating(false);
@@ -39,45 +42,60 @@ const DevotionPage: React.FC = () => {
       <PageHeader 
         title="Daily Devotions" 
         action={
-          <Button onClick={handleGenerate} isLoading={generating} className="gap-2 shadow-sm">
-            <Sparkles className="w-4 h-4" /> AI Generate Today's
+          <Button onClick={handleGenerate} isLoading={generating} variant="accent" className="gap-2 shadow-sm border border-accent-600 text-white bg-accent-500 hover:bg-accent-600">
+            <Sparkles className="w-4 h-4" /> AI Generate
           </Button>
         }
       />
 
-      <div className="space-y-6">
-        {devotions.map((devotion, index) => {
-            const isFirst = index === 0;
-            const isExpanded = expandedId === devotion.id || isFirst;
+      <div className="space-y-4">
+        {devotions.map((devotion) => {
+            const isExpanded = expandedId === devotion.id;
 
             return (
-                <Card key={devotion.id} className={`${isFirst ? 'border-brand-200 ring-4 ring-brand-50' : 'border-gray-200'}`}>
+                <Card 
+                    key={devotion.id} 
+                    className={`transition-all duration-300 ${isExpanded ? 'border-l-[6px] border-l-accent-500 shadow-md ring-1 ring-black/5 dark:ring-white/5' : 'border-l-4 border-l-transparent opacity-90'}`}
+                >
                     <div 
-                        className="p-5 flex justify-between items-center cursor-pointer bg-gray-50/50 border-b border-gray-100"
+                        className={`p-5 flex justify-between items-center cursor-pointer ${isExpanded ? 'border-b border-app-border dark:border-gray-800' : ''}`}
                         onClick={() => toggleExpand(devotion.id)}
                     >
                         <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                            <span className="text-xs font-bold text-accent-600 dark:text-accent-500 uppercase tracking-wider mb-1 block">
                                 {new Date(devotion.date).toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
                             </span>
-                            <h3 className="text-lg font-bold text-gray-900">{devotion.title}</h3>
+                            <h3 className="text-lg font-bold text-brand-900 dark:text-white">{devotion.title}</h3>
                         </div>
-                        <button className="text-gray-400">
-                            {isExpanded ? <ChevronUp /> : <ChevronDown />}
+                        <button className="text-app-subtext p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors">
+                            {isExpanded ? <ChevronUp className="w-5 h-5"/> : <ChevronDown className="w-5 h-5"/>}
                         </button>
                     </div>
                     
                     {isExpanded && (
-                        <div className="p-6 pt-4">
-                            <blockquote className="border-l-4 border-teal-500 pl-4 py-1 my-4 bg-teal-50 rounded-r text-teal-900 italic font-serif text-lg">
-                                "{devotion.scripture}"
-                            </blockquote>
-                            <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed">
+                        <div className="p-6 pt-6 animate-in slide-in-from-top-2 fade-in duration-200">
+                            <div className="flex items-start gap-3 mb-6">
+                                <div className="p-2 bg-accent-50 dark:bg-accent-900/20 rounded-lg text-accent-700 dark:text-accent-400 mt-1">
+                                    <BookOpen className="w-5 h-5" />
+                                </div>
+                                <blockquote className="text-lg font-serif italic text-gray-800 dark:text-gray-200 leading-relaxed border-l-2 border-accent-200 dark:border-accent-800 pl-4">
+                                    "{devotion.scripture}"
+                                </blockquote>
+                            </div>
+
+                            <div className="prose prose-slate dark:prose-invert max-w-none text-app-text dark:text-gray-300 leading-relaxed text-base">
                                 <p>{devotion.content}</p>
                             </div>
-                            <div className="mt-6 bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-                                <p className="font-bold text-yellow-800 text-sm uppercase mb-1">Prayer</p>
-                                <p className="text-gray-800 italic">"{devotion.prayer}"</p>
+
+                            <div className="mt-8 bg-accent-50 dark:bg-accent-900/10 p-5 rounded-xl border border-accent-100 dark:border-accent-900/30">
+                                <p className="font-bold text-accent-700 dark:text-accent-400 text-xs uppercase mb-2 tracking-wide">Prayer</p>
+                                <p className="text-gray-800 dark:text-gray-200 italic font-medium">"{devotion.prayer}"</p>
+                            </div>
+
+                            <div className="mt-6 flex justify-end">
+                                <Button variant="ghost" size="sm" className="text-app-subtext gap-2">
+                                    <Share2 className="w-4 h-4" /> Share
+                                </Button>
                             </div>
                         </div>
                     )}

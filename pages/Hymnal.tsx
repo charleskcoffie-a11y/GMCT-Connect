@@ -92,11 +92,13 @@ const Hymnal: React.FC = () => {
       </div>
 
       {loading ? <LoadingScreen /> : (
-          <div className="grid gap-3">
-              {hymns.map(hymn => (
+          <div className="grid gap-2">
+              {hymns.map((hymn, index) => (
                   <Card 
                     key={hymn.id} 
-                    className="p-4 flex justify-between items-center hover:shadow-md cursor-pointer transition-all active:scale-[0.99] touch-manipulation"
+                    className={`p-4 flex justify-between items-center hover:shadow-md cursor-pointer transition-all active:scale-[0.99] touch-manipulation ${
+                        index % 2 === 1 ? '!bg-gray-50/80' : '!bg-white'
+                    }`}
                     onClick={() => setReadingHymn(hymn)}
                   >
                       <div className="flex items-center gap-4">

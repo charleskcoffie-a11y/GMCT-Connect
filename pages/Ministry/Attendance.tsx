@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { PageHeader, Card, Button, Badge } from '../../components/UI';
+import { PageHeader, Card, Button } from '../../components/UI';
 import { MOCK_USER } from '../../services/mockData';
-import { Check, X, Save } from 'lucide-react';
+import { Check, X, Save, Calendar, Users } from 'lucide-react';
 
-// Mock Roster Data Local to Component for simplicity
+// Mock Roster Data
 const INITIAL_ROSTER = [
     { id: 'm1', name: 'John Doe', present: false, note: '' },
     { id: 'm2', name: 'Jane Smith', present: true, note: '' },
@@ -27,7 +27,6 @@ const Attendance: React.FC = () => {
 
   const handleSubmit = () => {
     setSubmitted(true);
-    // In real app, API call here
     setTimeout(() => setSubmitted(false), 2000);
   };
 
@@ -35,102 +34,93 @@ const Attendance: React.FC = () => {
     <div>
       <PageHeader title="Class Attendance" />
       
-      <div className="mb-6 space-y-4 md:flex md:space-y-0 md:space-x-4 md:items-end">
-          <div className="w-full md:w-auto">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-              <input 
+      <Card className="mb-6 p-4 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
+             <div className="flex items-center gap-3 w-full md:w-auto">
+                <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                    <Calendar className="w-5 h-5 text-slate-500" />
+                </div>
+                <input 
                   type="date" 
                   value={date} 
                   onChange={(e) => setDate(e.target.value)}
-                  className="w-full md:w-48 border rounded-lg px-3 py-2 bg-white shadow-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"
-              />
+                  className="bg-transparent font-semibold text-gray-900 dark:text-white outline-none"
+                />
+             </div>
+             <div className="flex items-center gap-2 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+                <Users className="w-4 h-4 text-slate-500" />
+                <span className="font-medium text-sm text-gray-700 dark:text-gray-300">{MOCK_USER.className || 'Class 1'}</span>
+             </div>
           </div>
-          <div className="w-full md:w-auto">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Class</label>
-              <div className="w-full md:w-auto px-4 py-2 bg-white border shadow-sm rounded-lg text-gray-700 font-medium">{MOCK_USER.className || 'Class 1'}</div>
-          </div>
-          
-          <div className="flex-1 text-right hidden md:block">
-              <span className="text-sm text-gray-500 mr-2">
-                Present: {roster.filter(r => r.present).length}/{roster.length}
-              </span>
-          </div>
-      </div>
+      </Card>
 
-      <div className="flex justify-between items-center md:hidden mb-4 px-1">
-         <span className="font-bold text-gray-700">Roster</span>
-         <span className="text-sm bg-gray-100 px-2 py-1 rounded text-gray-600">
+      <div className="flex justify-between items-center mb-4 px-1">
+         <span className="font-bold text-gray-500 text-sm uppercase tracking-wider">Members List</span>
+         <span className="text-xs font-bold bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-slate-600 dark:text-slate-400">
              {roster.filter(r => r.present).length} / {roster.length} Present
          </span>
       </div>
 
-      {/* Mobile-First Card List Layout */}
       <div className="space-y-3">
           {roster.map(member => (
               <div 
                 key={member.id} 
-                className={`bg-white rounded-xl shadow-sm border p-4 transition-all ${
-                    member.present ? 'border-green-200 bg-green-50/30' : 'border-gray-200'
+                className={`bg-white dark:bg-slate-900 rounded-xl shadow-native border p-4 transition-all ${
+                    member.present 
+                    ? 'border-green-500/50 bg-green-50/10 dark:bg-green-900/10' 
+                    : 'border-gray-200 dark:border-gray-800'
                 }`}
               >
                   <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm ${
-                             member.present ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
+                             member.present 
+                             ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' 
+                             : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
                           }`}>
                               {member.name.substring(0,2).toUpperCase()}
                           </div>
                           <div>
-                              <div className="font-bold text-gray-900">{member.name}</div>
-                              <div className="text-xs text-gray-500">{member.present ? 'Present' : 'Absent'}</div>
+                              <div className="font-bold text-gray-900 dark:text-white">{member.name}</div>
+                              <div className={`text-xs font-medium ${member.present ? 'text-green-600' : 'text-gray-400'}`}>
+                                  {member.present ? 'Present' : 'Absent'}
+                              </div>
                           </div>
                       </div>
 
                       <button 
                           onClick={() => togglePresent(member.id)}
-                          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-90 shadow-sm ${
                               member.present 
-                              ? 'bg-green-600 text-white shadow-md' 
-                              : 'bg-white border border-gray-300 text-gray-500 hover:bg-gray-50'
+                              ? 'bg-green-600 text-white shadow-green-200' 
+                              : 'bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 text-gray-400'
                           }`}
                       >
-                          {member.present ? (
-                              <>
-                                <Check className="w-5 h-5" />
-                                <span className="hidden sm:inline">Present</span>
-                              </>
-                          ) : (
-                              <>
-                                <X className="w-5 h-5" />
-                                <span className="hidden sm:inline">Absent</span>
-                              </>
-                          )}
+                          {member.present ? <Check className="w-5 h-5" /> : <X className="w-5 h-5" />}
                       </button>
                   </div>
                   
-                  {/* Note Input Area */}
-                  <div className="relative">
+                  <div className="relative mt-2">
                       <input 
                         type="text" 
-                        placeholder="Add optional note (e.g. Sick, Travel)..." 
+                        placeholder="Add optional note..." 
                         value={member.note}
                         onChange={(e) => updateNote(member.id, e.target.value)}
-                        className="w-full bg-transparent border-b border-gray-200 focus:border-brand-500 focus:outline-none text-sm py-2 px-1 placeholder-gray-400"
+                        className="w-full bg-transparent border-b border-gray-100 dark:border-gray-800 focus:border-slate-500 focus:outline-none text-sm py-2 px-1 placeholder-gray-400 dark:text-gray-300 transition-colors"
                       />
                   </div>
               </div>
           ))}
       </div>
 
-      {/* Floating Action Button for Mobile or Regular Button for Desktop */}
       <div className="mt-8 flex justify-end sticky bottom-6 z-10">
         <Button 
             onClick={handleSubmit} 
             disabled={submitted} 
-            className="w-full md:w-auto gap-2 shadow-lg py-3 md:py-2 text-lg md:text-sm"
+            className="w-full md:w-auto gap-2 shadow-xl bg-slate-800 hover:bg-slate-900 text-white"
         >
             <Save className="w-5 h-5 md:w-4 md:h-4" /> 
-            {submitted ? 'Attendance Saved' : 'Save Attendance Record'}
+            {submitted ? 'Saved' : 'Save Record'}
         </Button>
       </div>
     </div>
