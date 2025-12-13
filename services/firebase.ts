@@ -1,0 +1,37 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore, Firestore } from 'firebase/firestore';
+
+// Helper to safely access env vars without crashing if undefined
+const getEnvVar = (key: string) => {
+  try {
+    // @ts-ignore
+    return (import.meta as any).env?.[key];
+  } catch (e) {
+    return undefined;
+  }
+};
+
+const firebaseConfig = {
+  apiKey: getEnvVar('VITE_FIREBASE_API_KEY'),
+  authDomain: getEnvVar('VITE_FIREBASE_AUTH_DOMAIN'),
+  projectId: getEnvVar('VITE_FIREBASE_PROJECT_ID'),
+  storageBucket: getEnvVar('VITE_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: getEnvVar('VITE_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: getEnvVar('VITE_FIREBASE_APP_ID')
+};
+
+let db: Firestore | null = null;
+let isConfigured = false;
+
+// Only initialize if we have at least a project ID
+if (firebaseConfig.projectId && firebaseConfig.projectId !== 'placeholder') {
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        isConfigured = true;
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
+    }
+}
+
+export { db, isConfigured };
