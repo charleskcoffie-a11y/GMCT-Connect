@@ -1,101 +1,116 @@
-# ChurchConnect App - Firebase Setup Guide
 
-This application is built to work with **Mock Data** out of the box for immediate previewing. To connect it to a live backend, it is pre-configured to use **Google Firebase (Firestore)**.
+# GMCT Connect - Church Management App
 
-Follow these steps to connect your own Firebase database.
+**GMCT Connect** is a comprehensive church management and community application designed for the Ghana Methodist Church of Toronto. It bridges the gap between the congregation and leadership through role-based portals, liturgical resources, and administrative tools.
 
-## 1. Create a Firebase Project
+---
 
-1. Go to the [Firebase Console](https://console.firebase.google.com/).
-2. Click **"Add project"**.
-3. Name your project (e.g., `church-connect-app`) and click **Continue**.
-4. Disable Google Analytics (optional, not needed for this guide) and click **Create project**.
+## 🚀 Operations Guide (How to Use)
 
-## 2. Register a Web App
+This app is currently configured in **Demo Mode**. You do not need to register a real account to test the features. Follow the instructions below to explore the application from different perspectives.
 
-1. Once your project is ready, you will be on the Project Overview page.
-2. Click the **Web icon (`</>`)** to add a new app.
-3. Register the app with a nickname (e.g., `ChurchConnect Web`).
-4. Click **Register app**.
-5. You will see a code block containing `firebaseConfig`. **Keep this open**, you will need these values for Step 4.
+### 1. How to Log In
+1. Open the application.
+2. From the **Welcome Screen**, click **"Enter App"**.
+3. If you are not logged in, you will be redirected to the Sign In page.
+4. **Select a Role:** In the blue "Select Role (Demo Mode)" box, choose one of the following:
+   * **Member** (General User)
+   * **Class Leader** (Attendance & Pastoral Care)
+   * **Rev. Minister** (Administration & Liturgy)
+   * **Society Steward** (Announcements & Events)
+   * **Admin** (App Configuration)
+5. Click **Sign In** (Credentials are auto-filled).
 
-## 3. Enable Cloud Firestore
+---
 
-1. In the left sidebar, click on **Build** > **Firestore Database**.
-2. Click **Create database**.
-3. Choose a location (e.g., `nam5 (us-central)`) and click **Next**.
-4. **Important:** For the security rules, choose **Start in test mode** for initial development.
-   * *Note: "Test mode" allows anyone with the link to read/write for 30 days. For production, you will need to configure proper Security Rules.*
-5. Click **Enable**.
+### 2. Features by Role
 
-## 4. Configure Environment Variables
+#### 👤 General Member
+*   **Home Dashboard:** View the daily greeting, featured announcements, upcoming service details, and the daily devotion.
+*   **Hymnal:** Browse the Methodist Hymn Book (MHB), CAN, and Canticles. Use the search bar to find hymns by number or title.
+*   **My Portal:**
+    *   **Prayer Request:** Submit confidential prayer requests directly to the Minister.
+    *   **Message Minister:** Send direct messages to the Rev. Minister.
+    *   **Message Class Leader:** Send updates (e.g., "I am travelling") to your specific Class Leader.
+*   **Resources:** Access Daily Verses, Sermons (Audio/Video), and the Liturgical Calendar.
 
-1. In the root directory of your project (where `package.json` is), create a new file named `.env`.
-2. Copy the values from the `firebaseConfig` you got in Step 2 and paste them into the `.env` file using the specific format below.
+#### 📋 Class Leader
+*   **Access:** Login as *Class Leader* > Go to **My Portal** > Click **Class Manager** (or Member Directory).
+*   **Class Verification:** If asked for a code, use **1234**.
+*   **Workflows:**
+    *   **Members Tab:** View your class roster. Click "Note to Minister" to escalate issues.
+    *   **Attendance Tab:**
+        1. Select the Date and Day (Sunday/Tuesday).
+        2. use the **Multi-Select Lists** to quickly mark members as **Present**, **Sick**, or **Travelled**.
+        3. Click **Submit Attendance**.
+    *   **History Tab:** View past records. Click "Edit" to modify a previously submitted record.
+    *   **Analytics Tab:** View attendance trends and statistics (4-week or 2-week view).
+    *   **Follow-Up Tab:** See a list of members absent for more than 4 weeks. Log your follow-up actions (e.g., "Confirm Sick").
 
-**Example `.env` file content:**
+#### ✝️ Rev. Minister
+*   **Access:** Login as *Rev. Minister* > Go to **My Portal**.
+*   **Minister's Dashboard:**
+    *   **Prayer Requests:** View incoming requests. Mark them as "In-Progress" or "Closed". Expand requests to see contact details.
+    *   **Messages:** Read direct messages from members.
+    *   **Class Notes:** Review notes sent by Class Leaders regarding specific members.
+*   **Service Planner:**
+    *   Go to **Service Planner** from the Portal.
+    *   Plan the Liturgy (Theme, Preacher, Readings) for the next 4 Sundays.
+    *   Click **Save Schedule** to instantly update the "Upcoming Service" card on everyone's Home screen.
 
-```env
-VITE_FIREBASE_API_KEY=AIzaSy...your_api_key...
-VITE_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
-VITE_FIREBASE_APP_ID=1:123456789:web:abcdef123456
-```
+#### 📢 Society Steward
+*   **Access:** Login as *Society Steward* > Go to **My Portal** > Click **Steward Dashboard**.
+*   **Announcements:**
+    *   Click **"Post Announcement"**.
+    *   Fill in Title, Content, and Category (General, Audio, Video).
+    *   Toggle **Push Notification** to simulate sending an alert to all users.
+    *   View and delete active announcements.
 
-**Note:** You must use the prefix `VITE_` for the variables to be exposed to the application.
+#### ⚙️ Administrator
+*   **Access:** Login as *Admin* > Open the Sidebar Menu > Click **Settings**.
+*   **Configuration:**
+    *   **App Theme:** Force Light or Dark mode.
+    *   **Church Logo:** Upload a new logo to brand the Welcome screen and Header.
+    *   **Member Database:** Interface for CSV bulk imports (Mock UI).
 
-## 5. Run the Application
+---
 
-Once the `.env` file is saved with valid credentials, restart your development server:
+## 🛠 Technical Setup (For Developers)
 
+If you wish to deploy this application or connect it to a live backend, follow these steps.
+
+### Prerequisites
+*   Node.js (v16+)
+*   npm or yarn
+
+### Installation
+1.  Clone the repository.
+2.  Run `npm install` to install dependencies.
+
+### Configuration (Firebase)
+The app works with Mock Data by default. To connect to a live database:
+
+1.  Create a project at [console.firebase.google.com](https://console.firebase.google.com).
+2.  Enable **Authentication** and **Firestore Database**.
+3.  Create a `.env` file in the root directory:
+    ```env
+    VITE_FIREBASE_API_KEY=your_api_key
+    VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+    VITE_FIREBASE_PROJECT_ID=your_project_id
+    VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+    VITE_FIREBASE_APP_ID=your_app_id
+    ```
+4.  Restart the server. The app automatically detects the keys and switches from Mock Data to Firebase.
+
+### Running Locally
 ```bash
 npm run dev
-# or
-npm start
 ```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-The application logic (`services/api.ts`) automatically detects if these variables are present.
-*   **If Present:** It attempts to connect to Firebase.
-*   **If Missing/Invalid:** It gracefully falls back to the static Mock Data.
-
-## 6. Database Collections Structure
-
-When you start adding data to your Firestore, the app expects the following **Collection Names**. The documents inside should match the fields defined in `types.ts`.
-
-| Collection Name | Description |
-| :--- | :--- |
-| `announcements` | General news, audio, and video updates. |
-| `daily_verses` | Daily scripture readings. |
-| `events` | Calendar events and programs. |
-| `sunday_services`| Weekly service details (theme, preacher, readings). |
-| `devotions` | Daily devotionals. |
-| `sermons` | Sermon archives with audio/video links. |
-| `hymns` | Hymn lyrics and metadata (Book, Number, Title). |
-| `liturgical_seasons`| Seasons like Lent, Advent, Kingdomtide. |
-| `prayer_requests` | Requests submitted by users. |
-| `sick_reports` | Reports of sick members submitted by class leaders. |
-
-### How to populate data?
-
-1.  **Hymns:** You can use the **Settings** page in the app to upload a JSON file of hymns. The app will write them to your Firestore `hymns` collection automatically.
-2.  **Devotions:** Clicking "Generate Devotion" on the Devotion page will simulate an AI generation and write the result to your Firestore `devotions` collection.
-3.  **Other Data:** You can manually add documents in the Firebase Console to populate Events, Announcements, etc.
-
-## Troubleshooting
-
-*   **"Firebase initialization failed"**: Check your browser console. Ensure your `.env` values are exactly correct and contain no extra spaces or quotes around the values.
-*   **Empty Screens**: If you connected Firebase but haven't added data yet, the screens will be empty. The Mock Data is disabled as soon as a valid Firebase connection is detected.
-*   **Permission Denied**: Check your Firestore Rules tab in the console. Ensure read/write is allowed.
-
-```firebase_security_rules
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true; // Only for development!
-    }
-  }
-}
+### Building for Production
+```bash
+npm run build
 ```
+This generates static files in the `dist` folder, ready for deployment on Vercel, Netlify, or Firebase Hosting.

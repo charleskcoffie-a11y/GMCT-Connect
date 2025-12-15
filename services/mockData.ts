@@ -1,3 +1,4 @@
+
 import { 
   User, Announcement, DailyVerse, Event, SundayService, 
   Devotion, Sermon, Hymn, LiturgicalSeason, PrayerRequest, SickReport, Member, MinisterMessage 
@@ -91,7 +92,8 @@ export const SERVICES: SundayService[] = [
     date: '2023-11-26',
     theme: 'The King of Glory',
     preacher: 'Rev. Dr. A. Smith',
-    readings: ['Psalm 24', 'Matthew 25:31-46'],
+    serviceType: 'Matins',
+    readings: ['Psalm 24', 'Ephesians 1:15-23', 'Matthew 25:31-46'],
     hymns: ['MHB 1', 'MHB 155'],
     description: 'Christ the King Sunday service.'
   },
@@ -100,7 +102,8 @@ export const SERVICES: SundayService[] = [
     date: '2023-12-03',
     theme: 'Hope in Waiting',
     preacher: 'Rev. Jane Doe',
-    readings: ['Isaiah 64:1-9', 'Mark 13:24-37'],
+    serviceType: 'Communion',
+    readings: ['Isaiah 64:1-9', '1 Corinthians 1:3-9', 'Mark 13:24-37'],
     hymns: ['MHB 242', 'CAN 50'],
     description: 'First Sunday of Advent.'
   }
@@ -169,23 +172,79 @@ export const HYMNS: Hymn[] = [
   }
 ];
 
+const THIS_YEAR = new Date().getFullYear();
+
 export const SEASONS: LiturgicalSeason[] = [
   {
-    id: 'sea1',
-    name: 'Kingdomtide',
-    color: 'Green',
-    startDate: '2023-08-31',
-    endDate: '2023-11-26',
-    description: 'A season focusing on the Kingdom of God and our growth in discipleship.',
-    current: true
+    id: 'sea_christmas_start',
+    name: 'Christmas',
+    color: 'White',
+    startDate: `${THIS_YEAR}-01-01`,
+    endDate: `${THIS_YEAR}-01-05`,
+    description: 'Celebrating the birth of Jesus.',
+    current: false
   },
   {
-    id: 'sea2',
+    id: 'sea_epiphany',
+    name: 'Epiphany',
+    color: 'Green',
+    startDate: `${THIS_YEAR}-01-06`,
+    endDate: `${THIS_YEAR}-02-13`,
+    description: 'The manifestation of Christ to the Gentiles.',
+    current: false
+  },
+  {
+    id: 'sea_lent',
+    name: 'Lent',
+    color: 'Purple',
+    startDate: `${THIS_YEAR}-02-14`,
+    endDate: `${THIS_YEAR}-03-30`,
+    description: 'A season of reflection and preparation before Easter.',
+    current: false
+  },
+  {
+    id: 'sea_easter',
+    name: 'Easter',
+    color: 'White',
+    startDate: `${THIS_YEAR}-03-31`,
+    endDate: `${THIS_YEAR}-05-18`,
+    description: 'Celebrating the resurrection of Jesus Christ.',
+    current: false
+  },
+  {
+    id: 'sea_pentecost',
+    name: 'Pentecost',
+    color: 'Red',
+    startDate: `${THIS_YEAR}-05-19`,
+    endDate: `${THIS_YEAR}-08-30`,
+    description: 'Celebrating the descent of the Holy Spirit.',
+    current: false
+  },
+  {
+    id: 'sea_kingdom',
+    name: 'Kingdomtide',
+    color: 'Green',
+    startDate: `${THIS_YEAR}-08-31`,
+    endDate: `${THIS_YEAR}-12-02`,
+    description: 'A season focusing on the Kingdom of God and our growth in discipleship.',
+    current: false
+  },
+  {
+    id: 'sea_advent',
     name: 'Advent',
     color: 'Purple',
-    startDate: '2023-12-03',
-    endDate: '2023-12-24',
+    startDate: `${THIS_YEAR}-12-03`,
+    endDate: `${THIS_YEAR}-12-24`,
     description: 'Preparation for the coming of Christ.',
+    current: false
+  },
+  {
+    id: 'sea_christmas',
+    name: 'Christmas',
+    color: 'White',
+    startDate: `${THIS_YEAR}-12-25`,
+    endDate: `${THIS_YEAR}-12-31`,
+    description: 'Celebrating the birth of Jesus.',
     current: false
   }
 ];

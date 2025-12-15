@@ -1,24 +1,27 @@
+
 import React, { useState, useEffect } from 'react';
 import { PageHeader, Card, Button } from '../components/UI';
-import { ContentService, ClassService } from '../services/api';
-import { HymnBook, Hymn, Member } from '../types';
 import { useSettings } from '../context/SettingsContext';
-import { Upload, FileJson, FileText, CheckCircle, AlertCircle, Users, Moon, Sun, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { Upload, Users, Moon, Sun, Image as ImageIcon, Trash2, List } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Settings: React.FC = () => {
-  const { logoUrl, updateLogo } = useSettings();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { logoUrl, updateLogo, maxClasses, updateMaxClasses } = useSettings();
   const [theme, setTheme] = useState('light');
-
-  // Hymn Upload State
-  const [targetBook, setTargetBook] = useState<HymnBook>('MHB');
-  const [hymnFile, setHymnFile] = useState<File | null>(null);
-  const [hymnUploading, setHymnUploading] = useState(false);
-  const [hymnStatus, setHymnStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [localMaxClasses, setLocalMaxClasses] = useState(maxClasses);
 
   // Member Upload State
   const [memberFile, setMemberFile] = useState<File | null>(null);
-  const [memberUploading, setMemberUploading] = useState(false);
-  const [memberStatus, setMemberStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+
+  // Security Check
+  useEffect(() => {
+    if (user && user.role !== 'admin') {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
@@ -26,7 +29,10 @@ const Settings: React.FC = () => {
     } else {
       setTheme('light');
     }
-  }, []);
+    setLocalMaxClasses(maxClasses);
+  }, [maxClasses]);
+
+  if (user?.role !== 'admin') return null;
 
   const handleThemeChange = (newTheme: string) => {
     setTheme(newTheme);
@@ -36,6 +42,12 @@ const Settings: React.FC = () => {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const handleMaxClassesBlur = () => {
+      let val = localMaxClasses;
+      if (val < 1) val = 1;
+      updateMaxClasses(val);
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +67,6 @@ const Settings: React.FC = () => {
       updateLogo(null);
     }
   };
-
-  // --- Hymn & Member Handlers (Kept same as before but abbreviated for clarity) ---
-  const handleHymnUpload = async () => { /* ... existing logic ... */ };
-  const handleMemberUpload = async () => { /* ... existing logic ... */ };
 
   return (
     <div>
@@ -120,6 +128,30 @@ const Settings: React.FC = () => {
             </Card>
         </section>
         
+        {/* --- Church Configuration --- */}
+        <section>
+            <div className="flex items-center gap-2 mb-3 ml-1">
+                <List className="w-5 h-5 text-brand-600" />
+                <h2 className="text-lg font-bold text-brand-900 dark:text-white">Church Configuration</h2>
+            </div>
+            <Card className="p-6">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Max Class Number</h3>
+                        <p className="text-xs text-gray-500 mt-1">Total number of classes in the system.</p>
+                    </div>
+                    <input 
+                        type="number" 
+                        className="w-20 border rounded-lg p-2 text-center font-bold focus:ring-2 focus:ring-brand-500 outline-none dark:bg-slate-800 dark:border-slate-600 dark:text-white"
+                        value={localMaxClasses}
+                        onChange={(e) => setLocalMaxClasses(parseInt(e.target.value) || 0)}
+                        onBlur={handleMaxClassesBlur}
+                        min={1}
+                    />
+                </div>
+            </Card>
+        </section>
+
         {/* --- Member Database Management (CSV) --- */}
         <section>
           <div className="flex items-center gap-2 mb-3 ml-1">
@@ -144,7 +176,7 @@ const Settings: React.FC = () => {
                              if(e.target.files) setMemberFile(e.target.files[0]);
                         }} />
                         <label htmlFor="member-upload" className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm cursor-pointer hover:bg-gray-50 transition-colors text-sm font-medium text-gray-700 dark:text-gray-200">
-                            <FileText className="w-4 h-4 text-gray-500" />
+                            <Users className="w-4 h-4 text-gray-500" />
                             {memberFile ? 'Change File' : 'Select CSV File'}
                         </label>
                     </div>

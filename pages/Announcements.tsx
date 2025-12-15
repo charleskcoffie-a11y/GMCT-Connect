@@ -33,7 +33,7 @@ const Announcements: React.FC = () => {
             className={`px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
               filter === type 
                 ? 'bg-brand-600 text-white shadow-md' 
-                : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700'
+                : 'bg-white/10 text-gray-300 border border-white/20 hover:bg-white/20'
             }`}
           >
             {type}
@@ -43,7 +43,7 @@ const Announcements: React.FC = () => {
 
       <div className="space-y-6">
         {filteredItems.map(item => (
-          <Card key={item.id} className="overflow-hidden border-l-4 border-l-brand-600">
+          <Card key={item.id} variant="standard" className="overflow-hidden border-l-4 border-l-brand-600">
              <div className="flex flex-col md:flex-row">
                  {item.imageUrl && (
                     <div className="w-full md:w-64 h-48 md:h-auto flex-shrink-0 relative">
@@ -61,14 +61,14 @@ const Announcements: React.FC = () => {
                      </span>
                    </div>
                    
-                   <h3 className="font-bold text-lg md:text-xl mb-2 text-brand-900 dark:text-white">{item.title}</h3>
-                   <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-4">{item.content}</p>
+                   <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{item.title}</h3>
+                   <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.content}</p>
                    
                    {item.category === 'Audio' && item.mediaUrl && (
-                     <div className="bg-brand-50 dark:bg-brand-900/20 p-3 rounded-xl flex items-center gap-3 border border-brand-100 dark:border-brand-800/50">
-                       <div className="bg-brand-100 dark:bg-brand-800 p-2 rounded-full"><Mic className="w-5 h-5 text-brand-600 dark:text-brand-300"/></div>
+                     <div className="bg-brand-50 p-3 rounded-xl flex items-center gap-3 border border-brand-100">
+                       <div className="bg-brand-100 p-2 rounded-full"><Mic className="w-5 h-5 text-brand-600"/></div>
                        <div className="flex-1">
-                          <span className="text-xs font-bold text-brand-700 dark:text-brand-300 block mb-1">Audio Playback</span>
+                          <span className="text-xs font-bold text-brand-700 block mb-1">Audio Playback</span>
                           <audio controls src={item.mediaUrl} className="w-full h-8 accent-brand-600" />
                        </div>
                      </div>
@@ -85,10 +85,10 @@ const Announcements: React.FC = () => {
         ))}
         {filteredItems.length === 0 && (
           <div className="text-center py-16">
-             <div className="bg-gray-100 dark:bg-slate-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-8 h-8 text-gray-400" />
+             <div className="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-white/50" />
              </div>
-             <p className="text-gray-500 dark:text-gray-400 font-medium">No announcements found in this category.</p>
+             <p className="text-white/60 font-medium">No announcements found in this category.</p>
           </div>
         )}
       </div>

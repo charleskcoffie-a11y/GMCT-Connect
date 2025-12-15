@@ -1,20 +1,29 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 
 interface SettingsContextType {
   logoUrl: string | null;
   updateLogo: (url: string | null) => void;
+  maxClasses: number;
+  updateMaxClasses: (num: number) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
-export const SettingsProvider = ({ children }: { children: ReactNode }) => {
+export const SettingsProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [maxClasses, setMaxClasses] = useState<number>(14);
 
   useEffect(() => {
     // Load from local storage on mount
     const savedLogo = localStorage.getItem('gmct_app_logo');
     if (savedLogo) {
       setLogoUrl(savedLogo);
+    }
+    
+    const savedMaxClasses = localStorage.getItem('gmct_max_classes');
+    if (savedMaxClasses) {
+        setMaxClasses(parseInt(savedMaxClasses, 10));
     }
   }, []);
 
@@ -27,8 +36,13 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     setLogoUrl(url);
   };
 
+  const updateMaxClasses = (num: number) => {
+      localStorage.setItem('gmct_max_classes', num.toString());
+      setMaxClasses(num);
+  };
+
   return (
-    <SettingsContext.Provider value={{ logoUrl, updateLogo }}>
+    <SettingsContext.Provider value={{ logoUrl, updateLogo, maxClasses, updateMaxClasses }}>
       {children}
     </SettingsContext.Provider>
   );

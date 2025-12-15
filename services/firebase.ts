@@ -1,5 +1,8 @@
+
 import { initializeApp } from 'firebase/app';
 import { getFirestore, Firestore } from 'firebase/firestore';
+import { getAuth, Auth } from 'firebase/auth';
+import { getFunctions, Functions } from 'firebase/functions';
 
 // Helper to safely access env vars without crashing if undefined
 const getEnvVar = (key: string) => {
@@ -21,6 +24,8 @@ const firebaseConfig = {
 };
 
 let db: Firestore | null = null;
+let auth: Auth | null = null;
+let functions: Functions | null = null;
 let isConfigured = false;
 
 // Only initialize if we have at least a project ID
@@ -28,10 +33,12 @@ if (firebaseConfig.projectId && firebaseConfig.projectId !== 'placeholder') {
     try {
         const app = initializeApp(firebaseConfig);
         db = getFirestore(app);
+        auth = getAuth(app);
+        functions = getFunctions(app);
         isConfigured = true;
     } catch (error) {
         console.error("Firebase initialization failed:", error);
     }
 }
 
-export { db, isConfigured };
+export { db, auth, functions, isConfigured };

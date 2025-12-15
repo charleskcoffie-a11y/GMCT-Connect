@@ -1,13 +1,16 @@
-export type UserRole = 'rev_minister' | 'class_leader' | 'society_steward' | 'member';
+
+
+export type UserRole = 'rev_minister' | 'class_leader' | 'society_steward' | 'member' | 'admin';
 
 export interface User {
-  id: string;
+  id: string; // Firebase UID
   name: string;
-  role: UserRole;
-  className?: string; // e.g. "Class 1"
-  classId?: string;   // e.g. "c1"
   email: string;
+  role: UserRole;
+  classId?: string;   // e.g. "c1" (Only for Class Leaders/Members)
+  className?: string; // e.g. "Class 1"
   phoneNumber?: string;
+  createdAt?: string;
 }
 
 export interface Member {
@@ -17,6 +20,29 @@ export interface Member {
   classNumber: string; // e.g. "001"
   phone: string;
   status: 'Active' | 'Inactive';
+  lastAttended?: string; // ISO Date
+}
+
+export interface LeaderNote {
+  id: string;
+  classId: string;
+  leaderId: string;
+  leaderName: string;
+  memberId: string; // The member being discussed
+  memberName: string;
+  message: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
+export interface ClassMessage {
+  id: string;
+  senderName: string;
+  senderPhone: string;
+  classId: string;
+  message: string;
+  date: string;
+  isRead: boolean;
 }
 
 export interface Announcement {
@@ -53,7 +79,8 @@ export interface SundayService {
   date: string;
   theme: string;
   preacher: string;
-  readings: string[];
+  serviceType: 'Communion' | 'Matins' | 'Evensong' | 'Praise & Worship' | 'Special';
+  readings: string[]; // Expecting 3 readings
   hymns?: string[];
   description?: string;
 }
@@ -99,14 +126,21 @@ export interface LiturgicalSeason {
   current?: boolean;
 }
 
+export type AttendanceStatus = 'Present' | 'Absent' | 'Sick' | 'Travelled';
+export type DayType = 'Tuesday' | 'Sunday';
+
 export interface AttendanceRecord {
-  id: string;
-  date: string;
+  id: string; // constructed as classId_date_dayType
+  date: string; // YYYY-MM-DD
+  dayType: DayType;
   classId: string;
+  classNumber?: string;
   leaderId: string;
-  attendees: {
+  markedByUid: string;
+  createdAt: string;
+  records: {
     memberId: string;
-    present: boolean;
+    status: AttendanceStatus;
     note?: string;
   }[];
 }

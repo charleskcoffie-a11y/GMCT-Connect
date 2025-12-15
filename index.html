@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#F5F7FB">
+    <meta name="theme-color" content="#0F172A">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GMCT Connect</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,36 +24,32 @@
             colors: {
               // GMCT Brand Palette
               app: {
-                bg: '#F5F7FB',       // Light Mode Background
-                darkBg: '#0B1120',   // Dark Mode Background
-                card: '#FFFFFF',     // Card Background
-                darkCard: '#1E293B', // Dark Card
-                text: '#1C1C1E',     // Primary Text
-                subtext: '#6B7280',  // Secondary Text
-                border: '#E5E7EB',   // Dividers
-                darkBorder: '#334155'
+                bg: '#0F172A',       // Deep Navy
+                card: '#FFFFFF',     // Card Background (Light)
+                text: '#1C1C1E',     // Text inside cards
+                subtext: '#6B7280',
+                border: '#E5E7EB',
               },
               brand: {
-                50: '#EAF0FF', // Soft Sky (Backgrounds)
+                50: '#EAF0FF',
                 100: '#D4E0FF',
                 200: '#A8C1FF',
                 300: '#7DA2FF',
                 400: '#5183FF',
                 500: '#2664FF',
-                600: '#1F4FD8', // GMCT Blue (Primary Buttons/Active)
+                600: '#1F4FD8', // GMCT Blue
                 700: '#173CA3',
                 800: '#10296E',
-                900: '#0B1F4B', // Navy (Headers/Admin)
+                900: '#0B1F4B', // Navy
               },
               accent: {
                 50: '#FFFEF0',
-                100: '#FFFBC2',
-                200: '#FFF085',
-                300: '#FFE047',
-                400: '#FACC15',
-                500: '#F2B705', // GMCT Gold (Worship/Devotion)
+                500: '#F2B705', // GMCT Gold
                 600: '#C29204',
-                700: '#916D03',
+              },
+              // Navigation Red (Warm/Deep)
+              nav: {
+                red: '#8B1D1D', // GMCT Deep Red
               },
               // Status Colors
               success: { 50: '#f0fdf4', 500: '#22c55e', 700: '#15803d' },
@@ -61,15 +57,16 @@
               error:   { 50: '#fef2f2', 500: '#dc2626', 700: '#b91c1c' },
             },
             boxShadow: {
-              'native': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-              'native-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04)',
+              'native': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+              'native-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
             }
           }
         }
       }
     </script>
     <style>
-      /* Custom scrollbar for webkit */
+      /* Custom scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -78,13 +75,10 @@
         background: transparent;
       }
       ::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
+        background: rgba(255, 255, 255, 0.2);
         border-radius: 3px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-      }
-      /* Hide scrollbar for horizontal scrolling areas on mobile but keep functionality */
+      /* Hide scrollbar for horizontal scrolling areas */
       .no-scrollbar::-webkit-scrollbar {
           display: none;
       }
@@ -92,13 +86,17 @@
           -ms-overflow-style: none;
           scrollbar-width: none;
       }
-      /* Fix tap highlight on mobile */
       * {
         -webkit-tap-highlight-color: transparent;
       }
       body {
         padding-top: env(safe-area-inset-top);
         padding-bottom: env(safe-area-inset-bottom);
+        /* Global Gradient Background - Evening Blue Refinement */
+        /* Top: Slate 900 (#0F172A) -> Middle: Blue 950 (#172554) -> Bottom: Blue 900 (#1E3A8A) */
+        background: linear-gradient(180deg, #0F172A 0%, #172554 50%, #1E3A8A 100%);
+        background-attachment: fixed;
+        color: #FFFFFF; /* Default text white on the dark gradient */
       }
     </style>
   <script type="importmap">
@@ -117,7 +115,7 @@
 }
 </script>
 </head>
-  <body class="bg-app-bg text-app-text dark:bg-app-darkBg dark:text-app-darkText font-sans antialiased overflow-hidden selection:bg-brand-100 selection:text-brand-900 transition-colors duration-200">
+  <body class="font-sans antialiased overflow-hidden min-h-screen">
     <div id="root"></div>
   </body>
 </html>

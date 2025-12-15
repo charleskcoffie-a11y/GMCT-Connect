@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ContentService } from '../services/api';
 import { Hymn, HymnBook } from '../types';
@@ -35,11 +36,11 @@ const Hymnal: React.FC = () => {
   if (readingHymn) {
       return (
         <div className="max-w-2xl mx-auto h-full flex flex-col">
-            <Button variant="ghost" onClick={() => setReadingHymn(null)} className="mb-4 gap-2 self-start">
+            <Button variant="ghost" onClick={() => setReadingHymn(null)} className="mb-4 gap-2 self-start text-white hover:bg-white/10 hover:text-white">
                 <X className="w-4 h-4" /> Close
             </Button>
-            <Card className="flex-1 p-8 md:p-12 overflow-y-auto">
-                <div className="text-center mb-8 border-b pb-6">
+            <Card variant="standard" className="flex-1 p-8 md:p-12 overflow-y-auto shadow-2xl">
+                <div className="text-center mb-8 border-b border-gray-100 pb-6">
                     <span className={`text-sm font-bold uppercase tracking-widest px-3 py-1 rounded-full ${
                         readingHymn.book === 'MHB' ? 'bg-red-100 text-red-700' :
                         readingHymn.book === 'CAN' ? 'bg-blue-100 text-blue-700' :
@@ -67,7 +68,7 @@ const Hymnal: React.FC = () => {
             <input 
                 type="text" 
                 placeholder="Search title, number..." 
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none text-base"
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none text-base bg-white text-gray-900"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 inputMode="search"
@@ -82,7 +83,7 @@ const Hymnal: React.FC = () => {
                     className={`px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors flex-shrink-0 border ${
                         selectedBook === book 
                         ? 'bg-brand-600 text-white border-brand-600 shadow-sm' 
-                        : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                        : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
                     }`}
                 >
                     {book}
@@ -93,32 +94,55 @@ const Hymnal: React.FC = () => {
 
       {loading ? <LoadingScreen /> : (
           <div className="grid gap-2">
-              {hymns.map((hymn, index) => (
-                  <Card 
-                    key={hymn.id} 
-                    className={`p-4 flex justify-between items-center hover:shadow-md cursor-pointer transition-all active:scale-[0.99] touch-manipulation ${
-                        index % 2 === 1 ? '!bg-gray-50/80' : '!bg-white'
-                    }`}
-                    onClick={() => setReadingHymn(hymn)}
-                  >
-                      <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
-                            hymn.book === 'MHB' ? 'bg-red-100 text-red-700' :
-                            hymn.book === 'CAN' ? 'bg-blue-100 text-blue-700' :
-                            'bg-purple-100 text-purple-700'
-                        }`}>
-                            {hymn.number}
+              {hymns.map((hymn, index) => {
+                  const isEven = index % 2 === 0;
+                  let colorClass = '';
+                  
+                  // Book-specific alternating colors (Calm palette)
+                  switch (hymn.book) {
+                      case 'MHB':
+                          colorClass = isEven ? '!bg-rose-50/80 !border-rose-100' : '!bg-white !border-rose-50/50';
+                          break;
+                      case 'CAN':
+                          colorClass = isEven ? '!bg-sky-50/80 !border-sky-100' : '!bg-white !border-sky-50/50';
+                          break;
+                      case 'Canticles':
+                          colorClass = isEven ? '!bg-purple-50/80 !border-purple-100' : '!bg-white !border-purple-50/50';
+                          break;
+                      default:
+                          colorClass = isEven ? '!bg-gray-50/80' : '!bg-white';
+                  }
+
+                  return (
+                    <Card 
+                        key={hymn.id} 
+                        variant="standard"
+                        className={`p-4 flex justify-between items-center hover:shadow-md cursor-pointer transition-all active:scale-[0.99] touch-manipulation border ${colorClass}`}
+                        onClick={() => setReadingHymn(hymn)}
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+                                hymn.book === 'MHB' ? 'bg-red-100 text-red-700' :
+                                hymn.book === 'CAN' ? 'bg-blue-100 text-blue-700' :
+                                'bg-purple-100 text-purple-700'
+                            }`}>
+                                {hymn.number}
+                            </div>
+                            <div className="min-w-0">
+                                <h3 className="font-semibold text-gray-900 truncate pr-2">{hymn.title}</h3>
+                                <span className={`text-xs font-medium ${
+                                    hymn.book === 'MHB' ? 'text-red-600/70' :
+                                    hymn.book === 'CAN' ? 'text-blue-600/70' :
+                                    'text-purple-600/70'
+                                }`}>{hymn.book}</span>
+                            </div>
                         </div>
-                        <div className="min-w-0">
-                            <h3 className="font-semibold text-gray-900 truncate pr-2">{hymn.title}</h3>
-                            <span className="text-xs text-gray-500 font-medium">{hymn.book}</span>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="sm"><Music className="w-4 h-4" /></Button>
-                  </Card>
-              ))}
+                        <Button variant="ghost" size="sm" className="text-gray-400"><Music className="w-4 h-4" /></Button>
+                    </Card>
+                  );
+              })}
               {hymns.length === 0 && (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-white/50">
                       No hymns found matching your search.
                   </div>
               )}

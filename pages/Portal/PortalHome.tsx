@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { PageHeader, Card, Button } from '../../components/UI';
 import { Link } from 'react-router-dom';
 import { 
   ClipboardCheck, Users, HeartHandshake, Mail, 
-  ShieldCheck, ArrowRight, MessageSquare 
+  ShieldCheck, ArrowRight, MessageSquare, Calendar
 } from 'lucide-react';
 
 const PortalHome: React.FC = () => {
@@ -34,6 +35,24 @@ const PortalHome: React.FC = () => {
                   </div>
                   <div className="flex justify-between items-center text-brand-600 font-medium group-hover:underline">
                     <span>Open Inbox</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Card>
+              </Link>
+              
+              <Link to="/portal/service-planner" className="group">
+                <Card className="p-6 h-full hover:border-blue-500 transition-colors bg-blue-50 border-blue-100">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 bg-blue-200 text-blue-800 rounded-full">
+                      <Calendar className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-blue-900">Service Planner</h3>
+                      <p className="text-blue-700 text-sm">Update Liturgy & Preachers</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-blue-600 font-medium group-hover:underline">
+                    <span>Manage Schedule</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </Card>
@@ -125,6 +144,22 @@ const PortalHome: React.FC = () => {
                   <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-green-500" />
                </Card>
             </Link>
+
+            {/* New Message Class Leader Option */}
+            {user.role === 'member' && user.classId && (
+              <Link to="/portal/message-leader" className="group col-span-2 md:col-span-1">
+                 <Card className="p-5 hover:shadow-md transition-all flex items-center gap-4">
+                    <div className="bg-blue-100 p-3 rounded-full text-blue-600">
+                       <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                       <h3 className="font-bold text-gray-900">Message Class Leader</h3>
+                       <p className="text-xs text-gray-500">Contact leader of {user.className}</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-blue-500" />
+                 </Card>
+              </Link>
+            )}
           </div>
         </section>
       </div>
