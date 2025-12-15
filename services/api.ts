@@ -71,7 +71,41 @@ export const ContentService = {
     STATE.announcements = STATE.announcements.filter(a => a.id !== id);
   },
 
-  getDailyVerse: async (): Promise<DailyVerse> => MockData.DAILY_VERSE,
+  getDailyVerse: async (): Promise<DailyVerse> => {
+    // 1. Try Firebase if available
+    if (useFirebase() && db) {
+        // Implementation for future Firestore fetching
+    }
+    
+    const todayObj = new Date();
+    const todayStr = todayObj.toISOString().split('T')[0];
+
+    // 2. Check Overrides (Date Specific)
+    const override = MockData.VERSE_OVERRIDES.find(v => v.date === todayStr);
+    if (override) return override;
+
+    // 3. Verse Bank Rotation (Day of Year)
+    const start = new Date(todayObj.getFullYear(), 0, 0);
+    const diff = todayObj.getTime() - start.getTime();
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = Math.floor(diff / oneDay);
+
+    const bank = MockData.VERSE_BANK;
+    if (bank && bank.length > 0) {
+        // 0-based index from 1-based day of year
+        const index = (dayOfYear - 1) % bank.length;
+        const verse = bank[Math.max(0, index)]; 
+
+        return {
+            ...verse,
+            date: todayStr
+        };
+    }
+
+    // 4. Fallback to default
+    return MockData.DAILY_VERSE;
+  },
+
   getEvents: async (): Promise<Event[]> => STATE.events,
   
   getServices: async (): Promise<SundayService[]> => {

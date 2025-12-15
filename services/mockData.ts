@@ -57,13 +57,108 @@ export const ANNOUNCEMENTS: Announcement[] = [
   }
 ];
 
+// Fallback Verse (ASV)
 export const DAILY_VERSE: DailyVerse = {
-  text: "The Lord is my shepherd; I shall not want. He makes me lie down in green pastures.",
+  text: "Jehovah is my shepherd; I shall not want. He maketh me to lie down in green pastures.",
   reference: "Psalm 23:1-2",
-  version: "NIV",
+  version: "ASV",
   imageUrl: "https://picsum.photos/seed/nature/800/600",
   date: new Date().toISOString().split('T')[0]
 };
+
+// Verse Bank (Rotation System) - American Standard Version
+export const VERSE_BANK: Omit<DailyVerse, 'date'>[] = [
+  {
+    text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth on him should not perish, but have eternal life.",
+    reference: "John 3:16",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/john316/800/600"
+  },
+  {
+    text: "Trust in Jehovah with all thy heart, And lean not upon thine own understanding.",
+    reference: "Proverbs 3:5",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/prov35/800/600"
+  },
+  {
+    text: "In all thy ways acknowledge him, And he will direct thy paths.",
+    reference: "Proverbs 3:6",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/prov36/800/600"
+  },
+  {
+    text: "I can do all things in him that strengtheneth me.",
+    reference: "Philippians 4:13",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/phil413/800/600"
+  },
+  {
+    text: "And we know that to them that love God all things work together for good, even to them that are called according to his purpose.",
+    reference: "Romans 8:28",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/rom828/800/600"
+  },
+  {
+    text: "But seek ye first his kingdom, and his righteousness; and all these things shall be added unto you.",
+    reference: "Matthew 6:33",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/matt633/800/600"
+  },
+  {
+    text: "Come unto me, all ye that labor and are heavy laden, and I will give you rest.",
+    reference: "Matthew 11:28",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/matt1128/800/600"
+  },
+  {
+    text: "Fear thou not, for I am with thee; be not dismayed, for I am thy God; I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.",
+    reference: "Isaiah 41:10",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/isa4110/800/600"
+  },
+  {
+    text: "But they that wait for Jehovah shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; they shall walk, and not faint.",
+    reference: "Isaiah 40:31",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/isa4031/800/600"
+  },
+  {
+    text: "For I know the thoughts that I think toward you, saith Jehovah, thoughts of peace, and not of evil, to give you hope in your latter end.",
+    reference: "Jeremiah 29:11",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/jer2911/800/600"
+  },
+  {
+    text: "Rejoice in the Lord always: again I will say, Rejoice.",
+    reference: "Philippians 4:4",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/phil44/800/600"
+  },
+  {
+    text: "Be not anxious for anything, but in everything by prayer and supplication with thanksgiving let your requests be made known unto God.",
+    reference: "Philippians 4:6",
+    version: "ASV",
+    imageUrl: "https://picsum.photos/seed/phil46/800/600"
+  }
+];
+
+// Date-Specific Overrides (Priority)
+export const VERSE_OVERRIDES: DailyVerse[] = [
+    {
+        date: "2024-12-25",
+        text: "For unto us a child is born, unto us a son is given; and the government shall be upon his shoulder: and his name shall be called Wonderful, Counsellor, Mighty God, Everlasting Father, Prince of Peace.",
+        reference: "Isaiah 9:6",
+        version: "ASV",
+        imageUrl: "https://picsum.photos/seed/christmas/800/600"
+    },
+    {
+        date: "2024-01-01",
+        text: "In the beginning God created the heavens and the earth.",
+        reference: "Genesis 1:1",
+        version: "ASV",
+        imageUrl: "https://picsum.photos/seed/genesis/800/600"
+    }
+];
 
 export const EVENTS: Event[] = [
   {

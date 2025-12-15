@@ -12,21 +12,42 @@ const DailyVerse: React.FC = () => {
     ContentService.getDailyVerse().then(setVerse);
   }, []);
 
-  const handleShare = () => {
+  const handleShare = async () => {
     if (!verse) return;
     
     const shareText = `"${verse.text}" - ${verse.reference}\n\n#GhanaMethodistChurchOfToronto`;
+    
+    // Ensure URL is valid for sharing (must be http or https)
+    let url = window.location.href;
+    if (!url.startsWith('http')) {
+        url = 'https://gmctconnect.org'; // Fallback URL
+    }
 
     if (navigator.share) {
-      navigator.share({
-        title: 'Daily Verse from GMCT',
-        text: shareText,
-        url: window.location.href,
-      }).catch(console.error);
+      try {
+        await navigator.share({
+            title: 'Daily Verse from GMCT',
+            text: shareText,
+            url: url,
+        });
+      } catch (error: any) {
+        // If user cancelled, do nothing. If error (like Invalid URL), fallback.
+        if (error.name !== 'AbortError') {
+            console.error('Share failed, falling back to clipboard:', error);
+            copyToClipboard(shareText);
+        }
+      }
     } else {
-      navigator.clipboard.writeText(shareText);
-      alert('Verse copied to clipboard!');
+      copyToClipboard(shareText);
     }
+  };
+
+  const copyToClipboard = (text: string) => {
+      navigator.clipboard.writeText(text).then(() => {
+          alert('Verse copied to clipboard!');
+      }).catch(() => {
+          alert('Unable to copy to clipboard.');
+      });
   };
 
   if (!verse) return <LoadingScreen />;
