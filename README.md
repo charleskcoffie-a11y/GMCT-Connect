@@ -75,42 +75,93 @@ This app is currently configured in **Demo Mode**. You do not need to register a
 
 ---
 
-## 🛠 Technical Setup (For Developers)
+## 📦 How to Share for Testing (No Code)
 
-If you wish to deploy this application or connect it to a live backend, follow these steps.
+If you want to send this app to people to try without sharing the code, follow these steps:
 
-### Prerequisites
-*   Node.js (v16+)
-*   npm or yarn
-
-### Installation
-1.  Clone the repository.
-2.  Run `npm install` to install dependencies.
-
-### Configuration (Firebase)
-The app works with Mock Data by default. To connect to a live database:
-
-1.  Create a project at [console.firebase.google.com](https://console.firebase.google.com).
-2.  Enable **Authentication** and **Firestore Database**.
-3.  Create a `.env` file in the root directory:
-    ```env
-    VITE_FIREBASE_API_KEY=your_api_key
-    VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-    VITE_FIREBASE_PROJECT_ID=your_project_id
-    VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-    VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-    VITE_FIREBASE_APP_ID=your_app_id
-    ```
-4.  Restart the server. The app automatically detects the keys and switches from Mock Data to Firebase.
-
-### Running Locally
-```bash
-npm run dev
-```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-### Building for Production
+### 1. Build the App
+Open your terminal in the project folder and run:
 ```bash
 npm run build
 ```
-This generates static files in the `dist` folder, ready for deployment on Vercel, Netlify, or Firebase Hosting.
+This creates a **`dist`** folder in your project. This folder contains the "production-ready" version of your app.
+
+### 2. Deploy
+The easiest way to share is using **Netlify Drop**:
+1.  Go to [app.netlify.com/drop](https://app.netlify.com/drop).
+2.  Open your file explorer and find the **`dist`** folder created in Step 1.
+3.  **Drag and drop** the `dist` folder onto the Netlify page.
+4.  Copy the link generated and send it to your testers.
+
+---
+
+## 🛠 Technical Setup (For Developers)
+
+### 1. Installation
+1.  Clone the repository.
+2.  Run `npm install`.
+3.  Run `npm run dev`.
+
+### 2. Firebase Configuration
+To switch from Mock Data to a Live Database:
+
+1.  **Create Project:** Go to [console.firebase.google.com](https://console.firebase.google.com).
+2.  **Enable Auth:** Go to Build > Authentication > Get Started > Enable **Email/Password**.
+3.  **Enable Database:** Go to Build > Firestore Database > Create Database > **Start in Test Mode**.
+4.  **Get Keys:** Project Settings > General > "Your apps" > Add Web App > Copy Config.
+5.  **Env Variables:** Create a `.env` file in the root and paste keys:
+    ```env
+    VITE_FIREBASE_API_KEY=...
+    VITE_FIREBASE_AUTH_DOMAIN=...
+    VITE_FIREBASE_PROJECT_ID=...
+    VITE_FIREBASE_STORAGE_BUCKET=...
+    VITE_FIREBASE_MESSAGING_SENDER_ID=...
+    VITE_FIREBASE_APP_ID=...
+    ```
+
+### 3. Database Schema (Required Collections)
+You must manually create the initial data structure in the Firestore Console for the app to function correctly.
+
+#### **Collection: `users`**
+*   **Document ID:** The Firebase Auth UID of the user.
+*   **Fields:**
+    *   `name` (string): Full Name
+    *   `email` (string): User Email
+    *   `role` (string): One of -> `admin`, `rev_minister`, `class_leader`, `society_steward`, `member`
+    *   `classId` (string, optional): e.g., "c1" (Required for Class Leaders)
+    *   `className` (string, optional): e.g., "Class 1"
+
+#### **Collection: `members`**
+Used for Class Rosters.
+*   **Document ID:** Auto-ID
+*   **Fields:**
+    *   `fullName` (string): "Kwame Mensah"
+    *   `classId` (string): "c1" (Must match the leader's classId)
+    *   `classNumber` (string): "001"
+    *   `phone` (string): "024..."
+    *   `status` (string): "Active"
+
+#### **Collection: `announcements`**
+*   **Fields:** `title`, `content`, `category` (General/Audio/Video), `date` (ISO String), `isFeatured` (boolean).
+
+#### **Collection: `sunday_services`**
+*   **Document ID:** Auto-ID or Date based
+*   **Fields:**
+    *   `date` (string): "2023-11-26"
+    *   `theme` (string): "Theme Title"
+    *   `preacher` (string): "Rev. Name"
+    *   `readings` (array): ["Psalm 23", "John 3:16", ""]
+
+#### **Collection: `leaderNotes`**
+Stores notes sent from Class Leaders to Ministers.
+*   **Fields:** `leaderId`, `leaderName`, `memberId`, `memberName`, `message`, `isRead` (boolean).
+
+#### **Collection: `attendance`**
+*   **Document ID:** `{classId}_{date}_{dayType}` (e.g., `c1_2023-11-20_Sunday`)
+*   **Fields:**
+    *   `classId` (string)
+    *   `date` (string)
+    *   `records` (array of objects): `[{ memberId: "...", status: "Present" }]`
+
+#### **Collection: `prayer_requests`**
+*   **Fields:** `requesterName`, `phone`, `content`, `status` (New/In-Progress/Closed), `isAnonymous` (boolean).
