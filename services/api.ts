@@ -3,14 +3,23 @@ import * as MockData from './mockData';
 import { db, functions } from './firebase';
 import { 
   User, Announcement, DailyVerse, Event, SundayService, 
-  Devotion, Sermon, Hymn, LiturgicalSeason, PrayerRequest, SickReport, UserRole, Member, AttendanceRecord, MinisterMessage, LeaderNote, ClassMessage, DayType
+  Devotion, Sermon, Hymn, LiturgicalSeason, PrayerRequest, SickReport, UserRole, Member, AttendanceRecord, MinisterMessage, LeaderNote, ClassMessage, DayType, ChurchBranch, VisitorSubmission, Organization
 } from '../types';
 import { collection, addDoc, getDocs, doc, updateDoc, query, where, orderBy, getDoc, writeBatch, setDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 
 // --- In-Memory State (Fallback) ---
+// Initialize announcements with default visible dates for backward compatibility
+const today = new Date();
+const nextMonth = new Date();
+nextMonth.setDate(today.getDate() + 30);
+
 let STATE = {
-  announcements: [...MockData.ANNOUNCEMENTS],
+  announcements: MockData.ANNOUNCEMENTS.map(a => ({
+      ...a,
+      startDate: a.date, // Active from creation
+      endDate: nextMonth.toISOString() // Active for a month by default
+  })) as Announcement[],
   events: [...MockData.EVENTS],
   devotions: [...MockData.DEVOTIONS],
   sermons: [...MockData.SERMONS],
@@ -21,8 +30,9 @@ let STATE = {
   messages: [...MockData.MOCK_MESSAGES],
   attendance: [] as AttendanceRecord[],
   leaderNotes: [] as LeaderNote[], 
-  classMessages: [] as ClassMessage[], // New State for Class Messages
+  classMessages: [] as ClassMessage[], 
   services: [...MockData.SERVICES] as SundayService[],
+  organizations: [...MockData.ORGANIZATIONS] as Organization[]
 };
 
 // Helper to check if we should use Firebase
@@ -91,17 +101,14 @@ export const ContentService = {
     STATE.hymns.push(...newHymns);
   },
   
-  // Updated getSeasons to calculate 'current' based on today's date
   getSeasons: async (): Promise<LiturgicalSeason[]> => {
     const seasons = MockData.SEASONS;
     const now = new Date();
-    // Reset time for accurate date-only comparison
     now.setHours(0,0,0,0);
 
     return seasons.map(s => {
         const start = new Date(s.startDate);
         const end = new Date(s.endDate);
-        // Ensure comparison covers the end of the end date
         end.setHours(23, 59, 59, 999);
         
         return {
@@ -122,7 +129,9 @@ export const ContentService = {
     };
     STATE.devotions.unshift(newDevotion);
     return newDevotion;
-  }
+  },
+
+  getOrganizations: async (): Promise<Organization[]> => STATE.organizations
 };
 
 export const AdminService = {
@@ -224,7 +233,6 @@ export const ClassService = {
         return STATE.members.filter(m => m.classId === classId);
     },
     
-    // --- UPDATED: Save Attendance to Firestore ---
     submitAttendance: async (record: Omit<AttendanceRecord, 'id' | 'createdAt' | 'markedByUid'> & { markedByUid: string }): Promise<void> => {
         const docId = `${record.classId}_${record.date}_${record.dayType}`;
         const finalRecord: AttendanceRecord = {
@@ -234,10 +242,8 @@ export const ClassService = {
         };
 
         if (useFirebase() && db) {
-            // Upsert the record (overwrite if exists for same day/class)
             await setDoc(doc(db, 'attendance', docId), finalRecord, { merge: true });
         } else {
-            // Mock Fallback
             const existingIndex = STATE.attendance.findIndex(a => a.id === docId);
             if (existingIndex !== -1) {
                 STATE.attendance[existingIndex] = finalRecord;
@@ -246,7 +252,6 @@ export const ClassService = {
             }
         }
         
-        // Update local member "lastAttended" state (Mock only, real app would rely on query)
         if (!useFirebase()) {
             record.records.forEach(r => {
                 if (r.status === 'Present') {
@@ -262,7 +267,6 @@ export const ClassService = {
         }
     },
 
-    // --- NEW: Fetch Single Attendance Record (For Editing) ---
     getAttendanceForDate: async (classId: string, date: string, dayType: DayType): Promise<AttendanceRecord | null> => {
         const docId = `${classId}_${date}_${dayType}`;
         
@@ -276,7 +280,6 @@ export const ClassService = {
         return STATE.attendance.find(a => a.id === docId) || null;
     },
 
-    // --- NEW: Fetch Attendance History (For Analytics/Grid) ---
     getAttendanceHistory: async (classId: string, startDate?: string, endDate?: string): Promise<AttendanceRecord[]> => {
         if (useFirebase() && db) {
             let q = query(
@@ -285,9 +288,6 @@ export const ClassService = {
                 orderBy('date', 'desc')
             );
             
-            // Note: Compound queries with range filters often need composite indexes in Firestore.
-            // For simplicity, we filter dates client-side if indexes fail or are complex to setup here.
-            // But we will attempt date filtering if provided.
             if (startDate) {
                 q = query(q, where('date', '>=', startDate));
             }
@@ -299,7 +299,6 @@ export const ClassService = {
             return snap.docs.map(d => d.data() as AttendanceRecord);
         }
 
-        // Mock
         return STATE.attendance.filter(a => {
             const matchClass = a.classId === classId;
             const matchStart = startDate ? a.date >= startDate : true;
@@ -309,15 +308,10 @@ export const ClassService = {
     },
 
     getFollowUpMembers: async (classId: string): Promise<Member[]> => {
-        // Mock Logic: Return members of this class who haven't attended in the last 4 weeks
         const fourWeeksAgo = new Date();
         fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
         const fourWeeksIso = fourWeeksAgo.toISOString().split('T')[0];
 
-        // In Real Firebase, we would query attendance history. 
-        // For now, in mock, we use the `lastAttended` field on Member.
-        // In real app, `lastAttended` should be a field on the Member document updated via Cloud Function triggers.
-        
         const classMembers = STATE.members.filter(m => m.classId === classId);
         
         return classMembers.filter(member => {
@@ -327,12 +321,11 @@ export const ClassService = {
     },
 
     resolveFollowUp: async (memberId: string, resolution: 'Sick' | 'Travelled' | 'Resolved'): Promise<void> => {
-        // Mock Implementation
         const memberIndex = STATE.members.findIndex(m => m.id === memberId);
         if (memberIndex !== -1) {
             STATE.members[memberIndex] = {
                 ...STATE.members[memberIndex],
-                lastAttended: new Date().toISOString().split('T')[0] // 'Touch' the record
+                lastAttended: new Date().toISOString().split('T')[0]
             };
         }
     },
@@ -355,7 +348,6 @@ export const ClassService = {
     },
 
     sendMessageToLeader: async (msg: Omit<ClassMessage, 'id' | 'date' | 'isRead'>): Promise<void> => {
-        // Mock Implementation
         STATE.classMessages.unshift({
             id: `cm_${Date.now()}`,
             date: new Date().toISOString(),
@@ -365,11 +357,39 @@ export const ClassService = {
     },
 
     getClassMessages: async (classId: string): Promise<ClassMessage[]> => {
-        // Mock Implementation
         return STATE.classMessages.filter(m => m.classId === classId);
     },
     
     markClassMessageRead: async (id: string): Promise<void> => {
         STATE.classMessages = STATE.classMessages.map(m => m.id === id ? { ...m, isRead: true } : m);
     }
+};
+
+export const OutreachService = {
+  getBranches: async (): Promise<ChurchBranch[]> => {
+    return MockData.CHURCH_BRANCHES;
+  },
+
+  submitVisitorForm: async (form: VisitorSubmission): Promise<void> => {
+    if (useFirebase() && db) {
+      await addDoc(collection(db, 'visitors'), {
+        ...form,
+        createdAt: new Date().toISOString()
+      });
+      return;
+    }
+    // Mock success
+    console.log("Visitor Submitted:", form);
+  },
+
+  submitContactForm: async (data: { name: string; email: string; message: string }): Promise<void> => {
+     if (useFirebase() && db) {
+      await addDoc(collection(db, 'contact_inquiries'), {
+        ...data,
+        createdAt: new Date().toISOString()
+      });
+      return;
+    }
+    console.log("Contact Msg:", data);
+  }
 };

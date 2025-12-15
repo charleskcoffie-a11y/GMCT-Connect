@@ -1,5 +1,4 @@
 
-
 export type UserRole = 'rev_minister' | 'class_leader' | 'society_steward' | 'member' | 'admin';
 
 export interface User {
@@ -50,7 +49,9 @@ export interface Announcement {
   title: string;
   category: 'General' | 'Audio' | 'Video';
   content: string;
-  date: string;
+  date: string; // Creation date
+  startDate?: string; // Schedule Start
+  endDate?: string;   // Schedule End
   isFeatured?: boolean;
   mediaUrl?: string;
   imageUrl?: string;
@@ -174,4 +175,34 @@ export interface SickReport {
   date: string;
   status: 'Reported' | 'Visited' | 'Resolved';
   adminNotes?: string;
+}
+
+export interface ChurchBranch {
+  id: string;
+  name: string;
+  address: string;
+  imageUrl: string;
+  serviceTimes: { day: string; time: string; label: string }[];
+  contactPhone: string;
+  googleMapsUrl: string;
+}
+
+export interface VisitorSubmission {
+  name: string;
+  email: string;
+  phone: string;
+  visitDate: string;
+  notes?: string;
+}
+
+export interface Organization {
+  id: string;
+  name: string;
+  category: 'Men' | 'Women' | 'Youth' | 'Music' | 'Service' | 'General';
+  leaderName: string;
+  leaderPhone: string;
+  meetingTime: string;
+  description?: string;
+  announcements: string[];
+  imageUrl?: string;
 }

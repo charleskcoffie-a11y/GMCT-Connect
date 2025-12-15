@@ -6,7 +6,7 @@ import { Button } from './UI';
 import { 
   Home, Mic2, BookOpen, Calendar, Sun, 
   MessageCircle, Music, User as UserIcon, Settings,
-  LayoutDashboard, Menu, X, LogOut, LogIn
+  LayoutDashboard, Menu, X, LogOut, LogIn, Heart, MapPin, Mail, Users
 } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -35,6 +35,10 @@ const Layout: React.FC = () => {
     { to: "/hymnal", label: "Hymnal", icon: Music, showInBottom: true },
     { to: "/events", label: "Events", icon: Calendar, showInBottom: true },
     // Secondary Items (Menu)
+    { to: "/organizations", label: "Organizations", icon: Users, showInBottom: false },
+    { to: "/new-here", label: "New Here?", icon: Heart, showInBottom: false },
+    { to: "/locations", label: "Locations", icon: MapPin, showInBottom: false },
+    { to: "/contact", label: "Contact Us", icon: Mail, showInBottom: false },
     { to: "/portal", label: "My Portal", icon: LayoutDashboard, showInBottom: false },
     { to: "/announcements", label: "Announcements", icon: Mic2, showInBottom: false },
     { to: "/devotion", label: "Devotion", icon: MessageCircle, showInBottom: false },

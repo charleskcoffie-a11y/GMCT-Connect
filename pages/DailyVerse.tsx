@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ContentService } from '../services/api';
 import { DailyVerse as IDailyVerse } from '../types';
@@ -12,14 +13,19 @@ const DailyVerse: React.FC = () => {
   }, []);
 
   const handleShare = () => {
-    if (navigator.share && verse) {
+    if (!verse) return;
+    
+    const shareText = `"${verse.text}" - ${verse.reference}\n\n#GhanaMethodistChurchOfToronto`;
+
+    if (navigator.share) {
       navigator.share({
-        title: 'Daily Verse',
-        text: `${verse.text} - ${verse.reference}`,
+        title: 'Daily Verse from GMCT',
+        text: shareText,
         url: window.location.href,
       }).catch(console.error);
     } else {
-      alert('Copied to clipboard!');
+      navigator.clipboard.writeText(shareText);
+      alert('Verse copied to clipboard!');
     }
   };
 
@@ -45,6 +51,13 @@ const DailyVerse: React.FC = () => {
                 </blockquote>
                 <cite className="text-lg font-light not-italic opacity-90 block mb-1">{verse.reference}</cite>
                 <span className="text-xs opacity-60">{verse.version}</span>
+                
+                {/* Church Branding Footer */}
+                <div className="absolute bottom-6 left-0 right-0 text-center">
+                    <p className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white/80 drop-shadow-md">
+                        Ghana Methodist Church – Toronto
+                    </p>
+                </div>
             </div>
         </div>
         <div className="p-4 bg-white flex justify-between items-center">

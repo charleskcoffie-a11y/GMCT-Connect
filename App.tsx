@@ -18,6 +18,10 @@ import SickReports from './pages/Ministry/SickReports';
 import Profile from './pages/Profile';
 import Sermons from './pages/Sermons';
 import Settings from './pages/Settings';
+import NewHere from './pages/NewHere';
+import Locations from './pages/Locations';
+import Contact from './pages/Contact';
+import Organizations from './pages/Organizations';
 
 // New Portal Pages
 import PortalHome from './pages/Portal/PortalHome';
@@ -54,6 +58,11 @@ const App: React.FC = () => {
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<Home />} />
               
+              {/* Outreach Pages */}
+              <Route path="/new-here" element={<NewHere />} />
+              <Route path="/locations" element={<Locations />} />
+              <Route path="/contact" element={<Contact />} />
+              
               <Route path="/portal">
                 <Route index element={<PortalHome />} />
                 <Route path="class-manager" element={<ClassManager />} />
@@ -73,6 +82,7 @@ const App: React.FC = () => {
               <Route path="/hymnal" element={<Hymnal />} />
               <Route path="/liturgical" element={<Liturgical />} />
               <Route path="/sermons" element={<Sermons />} />
+              <Route path="/organizations" element={<Organizations />} />
               
               <Route path="/attendance" element={<Navigate to="/portal/class-manager" replace />} />
               <Route path="/prayers" element={<Navigate to="/portal/minister" replace />} />

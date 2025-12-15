@@ -1,5 +1,4 @@
-
-import { initializeApp } from 'firebase/app';
+import * as firebaseApp from 'firebase/app';
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getAuth, Auth } from 'firebase/auth';
 import { getFunctions, Functions } from 'firebase/functions';
@@ -31,7 +30,8 @@ let isConfigured = false;
 // Only initialize if we have at least a project ID
 if (firebaseConfig.projectId && firebaseConfig.projectId !== 'placeholder') {
     try {
-        const app = initializeApp(firebaseConfig);
+        // Use type assertion to bypass potential type definition mismatch for initializeApp
+        const app = (firebaseApp as any).initializeApp(firebaseConfig);
         db = getFirestore(app);
         auth = getAuth(app);
         functions = getFunctions(app);

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ContentService } from '../services/api';
 import { Announcement } from '../types';
@@ -11,7 +12,18 @@ const Announcements: React.FC = () => {
 
   useEffect(() => {
     ContentService.getAnnouncements().then(data => {
-      setItems(data);
+      // Filter logic: Show only active announcements
+      const now = new Date();
+      const active = data.filter(a => {
+          const start = a.startDate ? new Date(a.startDate) : new Date(a.date);
+          const end = a.endDate ? new Date(a.endDate) : null;
+          
+          return now >= start && (!end || now <= end);
+      });
+      // Sort by start date desc
+      active.sort((a,b) => (b.startDate || b.date).localeCompare(a.startDate || a.date));
+      
+      setItems(active);
       setLoading(false);
     });
   }, []);
@@ -43,43 +55,51 @@ const Announcements: React.FC = () => {
 
       <div className="space-y-6">
         {filteredItems.map(item => (
-          <Card key={item.id} variant="standard" className="overflow-hidden border-l-4 border-l-brand-600">
-             <div className="flex flex-col md:flex-row">
-                 {item.imageUrl && (
-                    <div className="w-full md:w-64 h-48 md:h-auto flex-shrink-0 relative">
-                      <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
-                    </div>
-                 )}
-                 <div className="p-5 md:p-6 flex-1">
-                   <div className="flex items-center gap-3 mb-3">
-                     <Badge color={item.category === 'Video' ? 'red' : item.category === 'Audio' ? 'blue' : 'gray'}>
-                       {item.category}
-                     </Badge>
-                     <span className="text-xs font-medium text-gray-400 flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(item.date).toLocaleDateString()}
-                     </span>
+          <Card key={item.id} variant="standard" className="overflow-hidden">
+             {/* Full Width Image / Flyer Display */}
+             {item.imageUrl && (
+                <div className="w-full bg-gray-100 dark:bg-black/30 border-b border-gray-100 dark:border-gray-800">
+                  <img 
+                    src={item.imageUrl} 
+                    alt={item.title} 
+                    className="w-full h-auto max-h-[700px] object-contain mx-auto" 
+                  />
+                </div>
+             )}
+             
+             <div className={`p-5 md:p-6 border-l-4 ${
+                 item.category === 'Video' ? 'border-l-red-500' : 
+                 item.category === 'Audio' ? 'border-l-purple-500' : 
+                 'border-l-brand-600'
+             }`}>
+               <div className="flex items-center gap-3 mb-3">
+                 <Badge color={item.category === 'Video' ? 'red' : item.category === 'Audio' ? 'blue' : 'gray'}>
+                   {item.category}
+                 </Badge>
+                 <span className="text-xs font-medium text-gray-400 flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    {new Date(item.startDate || item.date).toLocaleDateString()}
+                 </span>
+               </div>
+               
+               <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{item.title}</h3>
+               <p className="text-gray-600 text-sm leading-relaxed mb-4 whitespace-pre-line">{item.content}</p>
+               
+               {item.category === 'Audio' && item.mediaUrl && (
+                 <div className="bg-brand-50 p-3 rounded-xl flex items-center gap-3 border border-brand-100">
+                   <div className="bg-brand-100 p-2 rounded-full"><Mic className="w-5 h-5 text-brand-600"/></div>
+                   <div className="flex-1">
+                      <span className="text-xs font-bold text-brand-700 block mb-1">Audio Playback</span>
+                      <audio controls src={item.mediaUrl} className="w-full h-8 accent-brand-600" />
                    </div>
-                   
-                   <h3 className="font-bold text-lg md:text-xl mb-2 text-gray-900">{item.title}</h3>
-                   <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.content}</p>
-                   
-                   {item.category === 'Audio' && item.mediaUrl && (
-                     <div className="bg-brand-50 p-3 rounded-xl flex items-center gap-3 border border-brand-100">
-                       <div className="bg-brand-100 p-2 rounded-full"><Mic className="w-5 h-5 text-brand-600"/></div>
-                       <div className="flex-1">
-                          <span className="text-xs font-bold text-brand-700 block mb-1">Audio Playback</span>
-                          <audio controls src={item.mediaUrl} className="w-full h-8 accent-brand-600" />
-                       </div>
-                     </div>
-                   )}
-
-                   {item.category === 'Video' && item.mediaUrl && (
-                      <div className="mt-3 aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative group">
-                        <video controls src={item.mediaUrl} className="w-full h-full" />
-                      </div>
-                   )}
                  </div>
+               )}
+
+               {item.category === 'Video' && item.mediaUrl && (
+                  <div className="mt-3 aspect-video bg-black rounded-xl overflow-hidden shadow-sm relative group">
+                    <video controls src={item.mediaUrl} className="w-full h-full" />
+                  </div>
+               )}
              </div>
           </Card>
         ))}
@@ -88,7 +108,7 @@ const Announcements: React.FC = () => {
              <div className="bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-8 h-8 text-white/50" />
              </div>
-             <p className="text-white/60 font-medium">No announcements found in this category.</p>
+             <p className="text-white/60 font-medium">No active announcements found in this category.</p>
           </div>
         )}
       </div>

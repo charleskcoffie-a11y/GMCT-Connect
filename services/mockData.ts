@@ -1,7 +1,7 @@
 
 import { 
   User, Announcement, DailyVerse, Event, SundayService, 
-  Devotion, Sermon, Hymn, LiturgicalSeason, PrayerRequest, SickReport, Member, MinisterMessage 
+  Devotion, Sermon, Hymn, LiturgicalSeason, PrayerRequest, SickReport, Member, MinisterMessage, ChurchBranch, Organization
 } from '../types';
 
 export const MOCK_USER: User = {
@@ -280,5 +280,135 @@ export const SICK_REPORTS: SickReport[] = [
     urgency: 'Medium',
     date: '2023-11-24',
     status: 'Reported'
+  }
+];
+
+export const CHURCH_BRANCHES: ChurchBranch[] = [
+  {
+    id: 'to_main',
+    name: 'GMCT Main Sanctuary',
+    address: '123 Methodist Lane, Toronto, ON M9V 1A1',
+    imageUrl: 'https://picsum.photos/seed/churchB1/800/400',
+    serviceTimes: [
+      { day: 'Sunday', time: '9:00 AM', label: 'Main Service' },
+      { day: 'Wednesday', time: '7:00 PM', label: 'Bible Study' }
+    ],
+    contactPhone: '(416) 555-0101',
+    googleMapsUrl: 'https://maps.google.com/?q=Toronto+City+Hall'
+  },
+  {
+    id: 'to_north',
+    name: 'North York Fellowship',
+    address: '456 Sheppard Ave E, North York, ON M2N 3B3',
+    imageUrl: 'https://picsum.photos/seed/churchB2/800/400',
+    serviceTimes: [
+      { day: 'Sunday', time: '10:30 AM', label: 'Worship Service' },
+      { day: 'Friday', time: '7:00 PM', label: 'Prayer Meeting' }
+    ],
+    contactPhone: '(416) 555-0102',
+    googleMapsUrl: 'https://maps.google.com/?q=North+York+City+Centre'
+  }
+];
+
+export const ORGANIZATIONS: Organization[] = [
+  {
+    id: 'org1',
+    name: "Men's Fellowship",
+    category: 'Men',
+    leaderName: 'Bro. Emmanuel Mensah',
+    leaderPhone: '024 111 2222',
+    meetingTime: 'Mondays @ 7:00 PM',
+    description: 'Promoting fellowship, spiritual growth, and unity among the men of the church.',
+    announcements: ['Annual Retreat is set for next month.', 'Dues collection this Sunday.']
+  },
+  {
+    id: 'org2',
+    name: "Christ's Little Band",
+    category: 'General',
+    leaderName: 'Sis. Grace Osei',
+    leaderPhone: '050 333 4444',
+    meetingTime: 'Wednesdays @ 6:00 PM',
+    description: 'A prayer and evangelism group dedicated to spreading the Gospel through song and prayer.',
+    announcements: ['Prayer warriors meeting on Friday.', 'New members orientation next week.']
+  },
+  {
+    id: 'org3',
+    name: "AMB (Association of Methodist Brigades)",
+    category: 'Service',
+    leaderName: 'Capt. John Doe',
+    leaderPhone: '027 555 6666',
+    meetingTime: 'Saturdays @ 3:00 PM',
+    description: 'A uniformed voluntary organization within the church focused on discipline and service.',
+    announcements: ['Parade rehearsal this Saturday.', 'Uniform inspection on Sunday.']
+  },
+  {
+    id: 'org4',
+    name: "Women's Fellowship",
+    category: 'Women',
+    leaderName: 'Sis. Mary Boateng',
+    leaderPhone: '024 777 8888',
+    meetingTime: 'Thursdays @ 6:30 PM',
+    description: 'Empowering women to serve Christ in the church, home, and community.',
+    announcements: ['Visiting the orphanage next week.', 'Anniversary cloth is available.']
+  },
+  {
+    id: 'org5',
+    name: "Guild",
+    category: 'Women',
+    leaderName: 'Sis. Sarah Appiah',
+    leaderPhone: '020 999 0000',
+    meetingTime: 'Tuesdays @ 7:00 PM',
+    description: 'A fellowship for young women and mothers focused on Christian service.',
+    announcements: ['Cooking competition next month.', 'Bible study on Ruth chapter 1.']
+  },
+  {
+    id: 'org6',
+    name: "Singing Band",
+    category: 'Music',
+    leaderName: 'Bro. Peter Antwi',
+    leaderPhone: '054 123 1234',
+    meetingTime: 'Fridays @ 7:00 PM',
+    description: 'Ministers through traditional and indigenous Methodist hymns and lyrics.',
+    announcements: ['Recording session scheduled.', 'Joint practice with Choir.']
+  },
+  {
+    id: 'org7',
+    name: "Youth & Children's Service",
+    category: 'Youth',
+    leaderName: 'Bro. David Ofori',
+    leaderPhone: '026 456 7890',
+    meetingTime: 'Sundays @ 8:00 AM',
+    description: 'Nurturing the next generation in the fear and knowledge of the Lord.',
+    announcements: ['Youth camp registration is open.', 'Children\'s day performance practice.']
+  },
+  {
+    id: 'org8',
+    name: "Church Choir",
+    category: 'Music',
+    leaderName: 'Choirmaster James',
+    leaderPhone: '024 321 4321',
+    meetingTime: 'Saturdays @ 5:00 PM',
+    description: 'Leading the congregation in worship through hymns and anthems.',
+    announcements: ['Robes to be washed before Easter.', 'New anthem sheets available.']
+  },
+  {
+    id: 'org9',
+    name: "Ushers",
+    category: 'Service',
+    leaderName: 'Sis. Elizabeth',
+    leaderPhone: '050 987 6543',
+    meetingTime: 'Last Saturday of Month @ 4:00 PM',
+    description: 'Maintaining order and ensuring a welcoming atmosphere during services.',
+    announcements: ['Roster for next month is out.', 'Training for new ushers on Saturday.']
+  },
+  {
+    id: 'org10',
+    name: "Wesley Praise",
+    category: 'Music',
+    leaderName: 'Bro. Michael',
+    leaderPhone: '027 112 2334',
+    meetingTime: 'Saturdays @ 6:30 PM',
+    description: 'Contemporary praise and worship team.',
+    announcements: ['New instruments arrived.', 'Worship night coming up.']
   }
 ];

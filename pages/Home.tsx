@@ -6,7 +6,7 @@ import { useSettings } from '../context/SettingsContext';
 import { ContentService } from '../services/api';
 import { Announcement, SundayService, Devotion } from '../types';
 import { Card, Badge } from '../components/UI';
-import { ArrowRight, BookOpen, Mic2, Music, Sun, Church, Calendar, User } from 'lucide-react';
+import { ArrowRight, BookOpen, Mic2, Music, Sun, Church, Calendar, User, Heart } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { user } = useAuth();
@@ -16,15 +16,24 @@ const Home: React.FC = () => {
   const [todayDevotion, setTodayDevotion] = useState<Devotion | null>(null);
 
   useEffect(() => {
-    ContentService.getAnnouncements().then(list => setFeatured(list.find(a => a.isFeatured) || list[0]));
+    ContentService.getAnnouncements().then(list => {
+        const now = new Date();
+        const active = list.filter(a => {
+            const start = a.startDate ? new Date(a.startDate) : new Date(a.date);
+            const end = a.endDate ? new Date(a.endDate) : null;
+            return now >= start && (!end || now <= end);
+        });
+        
+        // Prioritize manually featured, then latest active
+        const feat = active.find(a => a.isFeatured) || active[0];
+        setFeatured(feat || null);
+    });
     
     // Logic to find the Next Upcoming Service
     ContentService.getServices().then(list => {
         const today = new Date();
         today.setHours(0,0,0,0);
-        // Filter for services today or in the future
         const upcoming = list.filter(s => new Date(s.date) >= today);
-        // Sort by date ascending and pick the first one
         upcoming.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setNextService(upcoming[0] || null);
     });
@@ -48,6 +57,25 @@ const Home: React.FC = () => {
            </h1>
         </div>
       </div>
+
+      {/* Visitor CTA (Visible if guest or for easy access) */}
+      <Link to="/new-here" className="block group">
+        <Card className="bg-gradient-to-r from-pink-500 to-rose-500 text-white border-none shadow-lg relative overflow-hidden p-6 hover:scale-[1.01] transition-transform">
+           <div className="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+           <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                 <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+                    <Heart className="w-6 h-6 text-white" />
+                 </div>
+                 <div>
+                    <h2 className="font-bold text-xl">New Here? Start Here.</h2>
+                    <p className="text-pink-100 text-sm">Plan your visit, meet the pastor, and find your place.</p>
+                 </div>
+              </div>
+              <ArrowRight className="w-6 h-6 text-white/80 group-hover:translate-x-1 transition-transform" />
+           </div>
+        </Card>
+      </Link>
 
       {/* Featured Banner - Hero Glass Card */}
       {featured && (
