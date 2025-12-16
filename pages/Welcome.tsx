@@ -41,7 +41,7 @@ const Welcome: React.FC = () => {
         </div>
 
         {/* Visual Focus (Center) */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-2 sm:gap-4 min-h-0 py-2 sm:py-3">
+        <div className="flex-1 flex flex-col justify-center items-center gap-3 sm:gap-6 min-h-0 py-4 sm:py-6">
            {/* Logo Container */}
            <div className="w-32 h-32 sm:w-48 sm:h-48 lg:w-52 lg:h-52 bg-white dark:bg-slate-800 rounded-full shadow-2xl shadow-black/30 flex items-center justify-center relative p-4 sm:p-8 border border-white/20 ring-4 ring-white/5 animate-in fade-in zoom-in-90 duration-1000 delay-200 flex-shrink-0">
               {logoUrl && !imageError ? (
