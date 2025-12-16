@@ -135,7 +135,6 @@ const Organizations: React.FC = () => {
                              </span>
                         </div>
                         <h3 className="text-xl font-extrabold text-gray-900 leading-tight mb-2 tracking-tight">{org.name}</h3>
-                        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed min-h-[40px]">{org.description}</p>
                     </div>
 
                     {/* Content Section */}
@@ -222,6 +221,15 @@ const Organizations: React.FC = () => {
                               </Button>
                             </div>
                           </div>
+                        </div>
+
+                        {/* Aims & Objectives */}
+                        <div className="mt-4 p-4 rounded-xl bg-gray-50 border border-gray-200">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Briefcase className="w-4 h-4 text-gray-500" />
+                            <span className="text-xs font-bold text-gray-600 uppercase tracking-widest">Aims & Objectives</span>
+                          </div>
+                          <p className="text-sm text-gray-700 leading-relaxed">{org.description}</p>
                         </div>
 
                         {/* Meeting time intentionally hidden per request */}

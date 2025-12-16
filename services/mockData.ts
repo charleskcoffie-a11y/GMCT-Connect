@@ -424,7 +424,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Bro. Emmanuel Mensah',
     leaderPhone: '024 111 2222',
     meetingTime: 'Mondays @ 7:00 PM',
-    description: 'Promoting fellowship, spiritual growth, and unity among the men of the church.',
+    description: 'A fellowship of Methodist men committed to spiritual growth, family leadership, accountability, and practical service. Aims include Bible study and prayer, mentoring, supporting church projects, and community outreach.',
     announcements: ['Annual Retreat is set for next month.', 'Dues collection this Sunday.']
   },
   {
@@ -434,7 +434,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Sis. Grace Osei',
     leaderPhone: '050 333 4444',
     meetingTime: 'Wednesdays @ 6:00 PM',
-    description: 'A prayer and evangelism group dedicated to spreading the Gospel through song and prayer.',
+    description: 'An evangelism and prayer movement focusing on intercession, witnessing, visitation, and gospel proclamation. Objectives include tract distribution, support for revival services, and testifying through song and prayer.',
     announcements: ['Prayer warriors meeting on Friday.', 'New members orientation next week.']
   },
   {
@@ -444,7 +444,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Capt. John Doe',
     leaderPhone: '027 555 6666',
     meetingTime: 'Saturdays @ 3:00 PM',
-    description: 'A uniformed voluntary organization within the church focused on discipline and service.',
+    description: 'A uniformed youth organization that promotes discipline, leadership, citizenship, and Christian service. Aims include training in drill and order, character formation, and serving church and community.',
     announcements: ['Parade rehearsal this Saturday.', 'Uniform inspection on Sunday.']
   },
   {
@@ -454,7 +454,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Sis. Mary Boateng',
     leaderPhone: '024 777 8888',
     meetingTime: 'Thursdays @ 6:30 PM',
-    description: 'Empowering women to serve Christ in the church, home, and community.',
+    description: 'A ministry nurturing women in prayer, discipleship, and service. Objectives include strengthening homes, mentoring younger women, charitable works, and wholehearted support of the church’s mission.',
     announcements: ['Visiting the orphanage next week.', 'Anniversary cloth is available.']
   },
   {
@@ -464,7 +464,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Sis. Sarah Appiah',
     leaderPhone: '020 999 0000',
     meetingTime: 'Tuesdays @ 7:00 PM',
-    description: 'A fellowship for young women and mothers focused on Christian service.',
+    description: 'A fellowship for young women and mothers devoted to Christian formation, mutual support, and practical service. Aims include discipleship, skills development, and community care.',
     announcements: ['Cooking competition next month.', 'Bible study on Ruth chapter 1.']
   },
   {
@@ -474,7 +474,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Bro. Peter Antwi',
     leaderPhone: '054 123 1234',
     meetingTime: 'Fridays @ 7:00 PM',
-    description: 'Ministers through traditional and indigenous Methodist hymns and lyrics.',
+    description: 'Ministers through Methodist hymns and indigenous songs, encouraging congregational singing and evangelism. Objectives include preserving hymnody, training singers, and supporting outreach services.',
     announcements: ['Recording session scheduled.', 'Joint practice with Choir.']
   },
   {
@@ -484,7 +484,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Sis. Abigail Mensah',
     leaderPhone: '026 456 7890',
     meetingTime: 'Sundays @ 8:00 AM',
-    description: 'Nurturing children in the fear and knowledge of the Lord.',
+    description: 'Catechesis and nurture of children in Scripture, prayer, and worship. Aims include teaching the faith, forming habits of devotion, partnering with parents, and ensuring a safe, welcoming environment.',
     announcements: ["Children's day performance practice."]
   },
   {
@@ -494,7 +494,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Bro. David Ofori',
     leaderPhone: '026 456 7890',
     meetingTime: 'Fridays @ 7:00 PM',
-    description: 'Equipping young adults to grow and serve through fellowship.',
+    description: 'Discipleship and leadership formation for youth and young adults. Objectives include Bible study, holy living, mission and service projects, and training for responsible citizenship.',
     announcements: ['Youth camp registration is open.']
   },
   {
@@ -504,7 +504,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Choirmaster James',
     leaderPhone: '024 321 4321',
     meetingTime: 'Saturdays @ 5:00 PM',
-    description: 'Leading the congregation in worship through hymns and anthems.',
+    description: 'Leads the congregation in worship with hymns and anthems, upholding musical excellence. Aims include rehearsing liturgical music, nurturing musicianship, and supporting the church’s seasonal observances.',
     announcements: ['Robes to be washed before Easter.', 'New anthem sheets available.']
   },
   {
@@ -514,7 +514,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Sis. Elizabeth',
     leaderPhone: '050 987 6543',
     meetingTime: 'Last Saturday of Month @ 4:00 PM',
-    description: 'Maintaining order and ensuring a welcoming atmosphere during services.',
+    description: 'A ministry of hospitality and order. Objectives include welcoming and seating congregants, ensuring safety and reverence, assisting with offerings, and facilitating smooth, worshipful services.',
     announcements: ['Roster for next month is out.', 'Training for new ushers on Saturday.']
   },
   {
@@ -524,7 +524,7 @@ export const ORGANIZATIONS: Organization[] = [
     leaderName: 'Bro. Michael',
     leaderPhone: '027 112 2334',
     meetingTime: 'Saturdays @ 6:30 PM',
-    description: 'Contemporary praise and worship team.',
+    description: 'A contemporary praise team that leads the church in joyful, Spirit-led worship. Aims include cultivating excellence and spiritual maturity, composing and arranging songs, and supporting outreach events.',
     announcements: ['New instruments arrived.', 'Worship night coming up.']
   }
 ];
