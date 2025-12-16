@@ -27,7 +27,7 @@ const Welcome: React.FC = () => {
         
         {/* Header Section (Top) - Identity Emphasis */}
         <div className="mt-4 sm:mt-8 md:mt-12 text-center animate-in fade-in slide-in-from-top-4 duration-1000 flex-shrink-0 space-y-2 sm:space-y-3 md:space-y-4 px-2">
-           <h1 className="text-[10px] xs:text-xs sm:text-sm font-semibold text-blue-200 tracking-wide uppercase opacity-90 line-clamp-2 leading-normal break-words">
+           <h1 className="text-[8px] xs:text-[10px] sm:text-xs font-semibold text-blue-200 tracking-wide uppercase opacity-90 line-clamp-2 leading-normal break-words">
              Ghana Methodist Church – Toronto
            </h1>
            <div className="space-y-1 sm:space-y-2">
@@ -41,7 +41,7 @@ const Welcome: React.FC = () => {
         </div>
 
         {/* Visual Focus (Center) */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-4 sm:gap-8 min-h-0 py-4 sm:py-6">
+        <div className="flex-1 flex flex-col justify-center items-center gap-2 sm:gap-4 min-h-0 py-2 sm:py-3">
            {/* Logo Container */}
            <div className="w-32 h-32 sm:w-48 sm:h-48 lg:w-52 lg:h-52 bg-white dark:bg-slate-800 rounded-full shadow-2xl shadow-black/30 flex items-center justify-center relative p-4 sm:p-8 border border-white/20 ring-4 ring-white/5 animate-in fade-in zoom-in-90 duration-1000 delay-200 flex-shrink-0">
               {logoUrl && !imageError ? (
