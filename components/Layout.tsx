@@ -6,7 +6,7 @@ import { Button } from './UI';
 import { 
   Home, Mic2, BookOpen, Calendar, Sun, 
   MessageCircle, Music, User as UserIcon, Settings,
-  LayoutDashboard, Menu, X, LogOut, LogIn, Heart, MapPin, Mail, Users
+  LayoutDashboard, Menu, X, LogOut, LogIn, Heart, MapPin, Mail, Users, Baby
 } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -30,6 +30,7 @@ const Layout: React.FC = () => {
 
   // --- Configuration ---
   const NAV_ITEMS = [
+    { to: "/", label: "Welcome", icon: Home, showInBottom: false },
     { to: "/dashboard", label: "Home", icon: Home, showInBottom: true },
     { to: "/service", label: "Service", icon: Sun, showInBottom: true },
     { to: "/hymnal", label: "Hymnal", icon: Music, showInBottom: true },
@@ -37,6 +38,7 @@ const Layout: React.FC = () => {
     // Secondary Items (Menu)
     { to: "/organizations", label: "Organizations", icon: Users, showInBottom: false },
     { to: "/new-here", label: "New Here?", icon: Heart, showInBottom: false },
+    { to: "/naming-baptism-requests", label: "Naming & Baptism", icon: Baby, showInBottom: false },
     { to: "/locations", label: "Locations", icon: MapPin, showInBottom: false },
     { to: "/contact", label: "Contact Us", icon: Mail, showInBottom: false },
     { to: "/portal", label: "My Portal", icon: LayoutDashboard, showInBottom: false },
@@ -51,7 +53,7 @@ const Layout: React.FC = () => {
 
   const DesktopSidebar = () => (
     <aside className="hidden md:flex fixed inset-y-0 left-0 z-50 w-72 bg-slate-900/50 backdrop-blur-xl border-r border-white/10 flex-col">
-      <div className="p-6 border-b border-white/10 flex items-center gap-3 shrink-0">
+      <NavLink to="/" className="p-6 border-b border-white/10 flex items-center gap-3 shrink-0 hover:bg-white/5 transition-colors">
         <div className="w-10 h-10 rounded-full bg-white/10 shadow-sm border border-white/20 p-1">
             <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" onError={(e) => e.currentTarget.src='https://ui-avatars.com/api/?name=GMCT&background=1F4FD8&color=fff'} />
         </div>
@@ -63,7 +65,7 @@ const Layout: React.FC = () => {
             </div>
             )}
         </div>
-      </div>
+      </NavLink>
 
       <nav className="p-4 space-y-1 overflow-y-auto flex-1">
         {NAV_ITEMS.map((item) => (
@@ -226,12 +228,12 @@ const Layout: React.FC = () => {
       
       {/* Mobile Top Header - Dark Glass */}
       <header className="md:hidden fixed top-0 left-0 right-0 h-14 sm:h-16 bg-slate-900/40 backdrop-blur-md border-b border-white/10 flex items-center px-3 sm:px-4 justify-between z-40 pt-[env(safe-area-inset-top)]">
-         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+         <NavLink to="/" className="flex items-center gap-2 sm:gap-3 min-w-0 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 sm:w-9 sm:h-9 p-1 rounded-full bg-white/10 border border-white/20 flex-shrink-0">
                 <img src="/logo.png" alt="GMCT" className="w-full h-full object-contain" onError={(e) => e.currentTarget.src='https://ui-avatars.com/api/?name=GMCT&background=1F4FD8&color=fff'} />
             </div>
             <span className="font-bold text-base sm:text-lg text-white tracking-tight drop-shadow-sm truncate">GMCT Connect</span>
-         </div>
+         </NavLink>
          {user ? (
            <NavLink to="/profile" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-600 border border-brand-400 text-white flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0">
              {user.name.charAt(0)}

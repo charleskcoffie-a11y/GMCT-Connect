@@ -26,6 +26,7 @@ const NewHere = React.lazy(() => import('./pages/NewHere'));
 const Locations = React.lazy(() => import('./pages/Locations'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 const Organizations = React.lazy(() => import('./pages/Organizations'));
+const NamingBaptismRequests = React.lazy(() => import('./pages/NamingBaptismRequests'));
 
 // New Portal Pages (lazy)
 const PortalHome = React.lazy(() => import('./pages/Portal/PortalHome'));
@@ -68,6 +69,7 @@ const App: React.FC = () => {
                 <Route path="/new-here" element={<NewHere />} />
                 <Route path="/locations" element={<Locations />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/naming-baptism-requests" element={<NamingBaptismRequests />} />
                 
                 <Route path="/portal">
                   <Route index element={<PortalHome />} />

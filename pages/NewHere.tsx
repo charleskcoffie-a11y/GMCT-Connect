@@ -58,7 +58,7 @@ const NewHere: React.FC = () => {
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">Welcome to GMCT</h2>
-                <p className="text-brand-600 font-medium">From the Pastor & Presiding Elder</p>
+                <p className="text-brand-600 font-medium">From the Leadership of GMCT</p>
               </div>
             </div>
             <div className="prose prose-slate max-w-none text-gray-600 leading-relaxed">
