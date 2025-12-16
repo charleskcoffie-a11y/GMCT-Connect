@@ -91,9 +91,9 @@ export const Badge: React.FC<{ children: React.ReactNode; color?: 'blue' | 'gree
 };
 
 export const PageHeader: React.FC<{ title: string; action?: React.ReactNode }> = ({ title, action }) => (
-  <div className="flex justify-between items-center mb-6 pt-2">
-    <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-sm">{title}</h1>
-    {action && <div>{action}</div>}
+  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 pt-1 sm:pt-2 gap-3 sm:gap-0">
+    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight drop-shadow-sm line-clamp-2">{title}</h1>
+    {action && <div className="flex-shrink-0">{action}</div>}
   </div>
 );
 
@@ -171,34 +171,34 @@ export const MultiSelectListBox: React.FC<MultiSelectListBoxProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden flex flex-col shadow-sm">
+    <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl overflow-hidden flex flex-col shadow-sm">
         {/* Header with Search */}
-        <div className="p-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-900/50">
-            <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold text-sm text-gray-700 dark:text-gray-200">{label}</h4>
-                <div className="text-xs text-gray-500">
+        <div className="p-2 sm:p-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-slate-900/50">
+            <div className="flex justify-between items-center mb-2 gap-2">
+                <h4 className="font-bold text-xs sm:text-sm text-gray-700 dark:text-gray-200 truncate">{label}</h4>
+                <div className="text-[10px] sm:text-xs text-gray-500 flex-shrink-0">
                     {selectedValues.length} selected
                 </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2">
                 <div className="relative flex-1">
-                    <Search className="w-4 h-4 absolute left-2.5 top-2.5 text-gray-400" />
+                    <Search className="w-3 h-3 sm:w-4 sm:h-4 absolute left-2 sm:left-2.5 top-2 sm:top-2.5 text-gray-400" />
                     <input 
-                        className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-500 outline-none"
+                        className="w-full pl-7 sm:pl-9 pr-2 sm:pr-3 py-1 sm:py-1.5 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-md sm:rounded-lg focus:ring-2 focus:ring-brand-500 outline-none"
                         placeholder="Search..."
                         value={search}
                         onChange={e => setSearch(e.target.value)}
                     />
                 </div>
-                <button onClick={handleSelectAll} className="px-3 py-1 text-xs font-semibold bg-white border border-gray-300 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">All</button>
-                <button onClick={handleClearVisible} className="px-3 py-1 text-xs font-semibold bg-white border border-gray-300 rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">None</button>
+                <button onClick={handleSelectAll} className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold bg-white border border-gray-300 rounded-md hover:bg-gray-100 text-gray-600 transition-colors flex-shrink-0">All</button>
+                <button onClick={handleClearVisible} className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-semibold bg-white border border-gray-300 rounded-md hover:bg-gray-100 text-gray-600 transition-colors flex-shrink-0">None</button>
             </div>
         </div>
         
         {/* Scrollable List */}
-        <div className={`overflow-y-auto ${height} p-2 space-y-1`}>
+        <div className={`overflow-y-auto ${height} p-1.5 sm:p-2 space-y-0.5 sm:space-y-1`}>
             {filtered.length === 0 ? (
-                 <div className="text-center text-sm text-gray-400 py-8">No members found matching "{search}"</div>
+                 <div className="text-center text-xs sm:text-sm text-gray-400 py-8">No members found</div>
             ) : (
                 filtered.map(opt => {
                     const isSelected = selectedValues.includes(opt.value);
@@ -206,14 +206,14 @@ export const MultiSelectListBox: React.FC<MultiSelectListBoxProps> = ({
                         <div 
                             key={opt.value}
                             onClick={() => toggleOption(opt.value)}
-                            className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors border ${getSelectionClasses(isSelected)}`}
+                            className={`flex items-start gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-md sm:rounded-lg cursor-pointer transition-colors border text-xs sm:text-sm ${getSelectionClasses(isSelected)}`}
                         >
-                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all ${getCheckboxClasses(isSelected)}`}>
-                                {isSelected && <Check className="w-3.5 h-3.5" />}
+                            <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded border flex items-center justify-center transition-all flex-shrink-0 mt-0.5 ${getCheckboxClasses(isSelected)}`}>
+                                {isSelected && <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                             </div>
-                            <div>
-                                <div className="text-sm">{opt.label}</div>
-                                {opt.subLabel && <div className="text-xs opacity-70">{opt.subLabel}</div>}
+                            <div className="min-w-0 flex-1">
+                                <div className="truncate">{opt.label}</div>
+                                {opt.subLabel && <div className="text-[9px] sm:text-xs opacity-70 truncate">{opt.subLabel}</div>}
                             </div>
                         </div>
                     )

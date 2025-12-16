@@ -471,54 +471,54 @@ Submitted by: ${user.name}
       <PageHeader title={`Class ${user.className} Manager`} />
 
       {/* Tabs */}
-      <div className="flex border-b mb-6 overflow-x-auto no-scrollbar">
+      <div className="flex border-b mb-6 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
         <button 
           onClick={() => setActiveTab('members')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'members' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'members' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <Users className="w-4 h-4" /> Members
+          <Users className="w-4 h-4" /> <span className="hidden sm:inline">Members</span>
         </button>
         <button 
           onClick={() => setActiveTab('attendance')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'attendance' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'attendance' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <Calendar className="w-4 h-4" /> Attendance
+          <Calendar className="w-4 h-4" /> <span className="hidden sm:inline">Attendance</span>
         </button>
         <button 
           onClick={() => setActiveTab('history')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'history' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'history' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <History className="w-4 h-4" /> History
+          <History className="w-4 h-4" /> <span className="hidden sm:inline">History</span>
         </button>
         <button 
           onClick={() => setActiveTab('analytics')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'analytics' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'analytics' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <BarChart2 className="w-4 h-4" /> Analytics
+          <BarChart2 className="w-4 h-4" /> <span className="hidden sm:inline">Analytics</span>
         </button>
         <button 
           onClick={() => setActiveTab('followup')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'followup' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'followup' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <ClipboardList className="w-4 h-4" /> Follow-Up
+          <ClipboardList className="w-4 h-4" /> <span className="hidden sm:inline">Follow-Up</span>
           {followUpList.length > 0 && (
              <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{followUpList.length}</span>
           )}
         </button>
         <button 
           onClick={() => setActiveTab('reports')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'reports' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'reports' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <BarChart2 className="w-4 h-4" /> Reports
+          <BarChart2 className="w-4 h-4" /> <span className="hidden sm:inline">Reports</span>
           {(flaggedThirty.length + flaggedNinety.length) > 0 && (
              <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{flaggedThirty.length + flaggedNinety.length}</span>
           )}
         </button>
         <button 
           onClick={() => setActiveTab('inbox')}
-          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'inbox' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+          className={`px-3 sm:px-6 py-3 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'inbox' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
-          <Mail className="w-4 h-4" /> Inbox
+          <Mail className="w-4 h-4" /> <span className="hidden sm:inline">Inbox</span>
           {messages.filter(m => !m.isRead).length > 0 && (
               <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{messages.filter(m => !m.isRead).length}</span>
           )}
@@ -526,34 +526,34 @@ Submitted by: ${user.name}
       </div>
 
       {activeTab === 'members' && (
-        <div className="space-y-4">
+        <div className="space-y-4 px-0">
            <div className="relative">
              <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
              <input 
                type="text" 
-               placeholder="Search name or number (e.g. 001)..."
-               className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none"
+               placeholder="Search name or #..."
+               className="w-full pl-10 pr-4 py-3 sm:py-2 border rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm sm:text-base"
                value={search}
                onChange={e => setSearch(e.target.value)}
              />
            </div>
            
-           <div className="grid gap-3">
+           <div className="grid gap-3 sm:gap-4">
              {filteredMembers.map(member => (
-               <Card key={member.id} className="p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                 <div className="flex items-center gap-4">
-                   <div className="w-10 h-10 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">
+               <Card key={member.id} className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+                 <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto min-w-0">
+                   <div className="w-10 h-10 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
                      {member.classNumber}
                    </div>
-                   <div>
-                     <h3 className="font-bold text-gray-900">{member.fullName}</h3>
-                     <p className="text-xs text-gray-500">{member.phone}</p>
+                   <div className="min-w-0 flex-1">
+                     <h3 className="font-bold text-gray-900 text-sm sm:text-base truncate">{member.fullName}</h3>
+                     <p className="text-xs sm:text-sm text-gray-500 truncate">{member.phone}</p>
                    </div>
                  </div>
-                 <div className="flex items-center gap-3 self-end md:self-auto">
-                    <Badge color={member.status === 'Active' ? 'green' : 'gray'}>{member.status}</Badge>
-                    <Button size="sm" variant="outline" onClick={() => setNoteMember(member)} className="text-xs gap-1 h-8">
-                        <MessageSquare className="w-3 h-3" /> Note to Minister
+                 <div className="flex items-center gap-2 sm:gap-3 self-end sm:self-auto w-full sm:w-auto justify-end">
+                    <Badge color={member.status === 'Active' ? 'green' : 'gray'} className="text-xs sm:text-sm">{member.status}</Badge>
+                    <Button size="sm" variant="outline" onClick={() => setNoteMember(member)} className="text-xs gap-1 h-8 px-2 sm:px-3 flex-shrink-0">
+                        <MessageSquare className="w-3 h-3" /> <span className="hidden sm:inline">Note</span>
                     </Button>
                  </div>
                </Card>
@@ -564,19 +564,19 @@ Submitted by: ${user.name}
 
       {/* Note Modal */}
       {noteMember && (
-          <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4">
-              <Card className="w-full max-w-md p-6 bg-white animate-in zoom-in-95">
-                  <h3 className="font-bold text-lg mb-2">Note regarding {noteMember.fullName}</h3>
-                  <p className="text-sm text-gray-500 mb-4">This note will be sent securely to the Minister's dashboard.</p>
+          <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4 sm:p-0">
+              <Card className="w-full max-w-md p-4 sm:p-6 bg-white animate-in zoom-in-95 rounded-xl">
+                  <h3 className="font-bold text-lg sm:text-xl mb-2">{noteMember.fullName}</h3>
+                  <p className="text-xs sm:text-sm text-gray-500 mb-4">This note will be sent securely to the Minister's dashboard.</p>
                   <textarea 
-                    className="w-full border p-3 rounded-lg mb-4 h-32 focus:ring-2 focus:ring-brand-500 outline-none"
+                    className="w-full border p-3 rounded-lg mb-4 h-32 focus:ring-2 focus:ring-brand-500 outline-none text-sm"
                     placeholder="Enter observation, prayer need, or concern..."
                     value={noteMessage}
                     onChange={e => setNoteMessage(e.target.value)}
                   />
                   <div className="flex justify-end gap-2">
-                      <Button variant="ghost" onClick={() => setNoteMember(null)}>Cancel</Button>
-                      <Button onClick={handleSendNote} isLoading={noteSending} className="gap-2">
+                      <Button variant="ghost" onClick={() => setNoteMember(null)} size="sm" className="text-sm">Cancel</Button>
+                      <Button onClick={handleSendNote} isLoading={noteSending} className="gap-2 text-sm" size="sm">
                           <Send className="w-4 h-4" /> Send Note
                       </Button>
                   </div>
@@ -585,39 +585,39 @@ Submitted by: ${user.name}
       )}
 
       {activeTab === 'attendance' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
            {/* Date & Day Type Controls */}
-           <Card className="p-4 bg-gray-50 border-gray-200">
-               <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-                   <div className="flex items-center gap-2 w-full md:w-auto">
+           <Card className="p-3 sm:p-4 bg-gray-50 border-gray-200">
+               <div className="flex flex-col gap-3 sm:gap-4 sm:flex-row sm:justify-between sm:items-center">
+                   <div className="flex items-center gap-2 w-full sm:w-auto">
                         <input 
                             type="date" 
                             value={attDate}
                             onChange={e => setAttDate(e.target.value)}
-                            className="border-gray-300 border rounded-lg p-2.5 bg-white text-gray-900 focus:ring-2 focus:ring-brand-500 outline-none w-full md:w-auto font-medium"
+                            className="border-gray-300 border rounded-lg p-2.5 bg-white text-gray-900 focus:ring-2 focus:ring-brand-500 outline-none w-full sm:w-auto font-medium text-sm"
                         />
                    </div>
-                   <div className="flex p-1 bg-white border border-gray-200 rounded-lg w-full md:w-auto shadow-sm">
+                   <div className="flex p-1 bg-white border border-gray-200 rounded-lg w-full sm:w-auto shadow-sm gap-1">
                         <button 
                             onClick={() => setDayType('Sunday')}
-                            className={`flex-1 px-4 py-2 text-sm font-bold uppercase rounded-md transition-all ${dayType === 'Sunday' ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+                            className={`flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold uppercase rounded-md transition-all ${dayType === 'Sunday' ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
                         >
-                            Sunday
+                            Sun
                         </button>
                         <button 
                             onClick={() => setDayType('Tuesday')}
-                            className={`flex-1 px-4 py-2 text-sm font-bold uppercase rounded-md transition-all ${dayType === 'Tuesday' ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
+                            className={`flex-1 px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold uppercase rounded-md transition-all ${dayType === 'Tuesday' ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900'}`}
                         >
-                            Tuesday
+                            Tue
                         </button>
                    </div>
                </div>
            </Card>
            
            {/* Filter Indicator */}
-           <div className="flex items-center gap-2 bg-blue-50 text-blue-800 px-4 py-2 rounded-lg text-sm border border-blue-100">
-               <Users className="w-4 h-4" />
-               <span className="font-semibold">Showing {members.length} members from {user.className}</span>
+           <div className="flex items-center gap-2 bg-blue-50 text-blue-800 px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm border border-blue-100">
+               <Users className="w-4 h-4 flex-shrink-0" />
+               <span className="font-semibold truncate">Showing {members.length} members</span>
            </div>
 
            {/* Bulk Marking UI */}
@@ -630,90 +630,90 @@ Submitted by: ${user.name}
                       selectedValues={presentIds}
                       onChange={handlePresentChange}
                       colorTheme="green"
-                      height="h-64"
+                      height="h-48 sm:h-64"
                   />
               </div>
 
               {/* Grid for Exceptions */}
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="border-l-4 border-l-yellow-400 rounded-xl shadow-sm overflow-hidden">
                       <MultiSelectListBox 
-                          label="Select Sick Members"
+                          label="Select Sick"
                           options={getMemberOptions()}
                           selectedValues={sickIds}
                           onChange={handleSickChange}
                           colorTheme="yellow"
-                          height="h-48"
+                          height="h-40 sm:h-48"
                       />
                   </div>
                   <div className="border-l-4 border-l-blue-500 rounded-xl shadow-sm overflow-hidden">
                       <MultiSelectListBox 
-                          label="Select Travelled Members"
+                          label="Select Travelled"
                           options={getMemberOptions()}
                           selectedValues={travelledIds}
                           onChange={handleTravelledChange}
                           colorTheme="blue"
-                          height="h-48"
+                          height="h-40 sm:h-48"
                       />
                   </div>
               </div>
            </div>
 
            {/* Review & Summary */}
-           <Card className="p-5 bg-white">
-               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                   <ClipboardList className="w-5 h-5 text-gray-500" /> Review Summary
+           <Card className="p-4 sm:p-5 bg-white">
+               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2 text-sm sm:text-base">
+                   <ClipboardList className="w-5 h-5 text-gray-500" /> Review
                </h3>
                
-               <div className="space-y-4">
-                   <div className="flex items-start justify-between p-3 bg-green-50 rounded-lg border border-green-100">
-                       <div>
-                           <span className="font-bold text-green-800 block mb-1">Present</span>
-                           <div className="text-xs text-green-700 leading-relaxed">
-                               {presentIds.length > 0 ? presentIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None selected'}
+               <div className="space-y-2 sm:space-y-4">
+                   <div className="flex items-start justify-between p-3 bg-green-50 rounded-lg border border-green-100 gap-2">
+                       <div className="min-w-0 flex-1">
+                           <span className="font-bold text-green-800 block mb-1 text-xs sm:text-sm">Present</span>
+                           <div className="text-xs text-green-700 line-clamp-2">
+                               {presentIds.length > 0 ? presentIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None'}
                            </div>
                        </div>
-                       <span className="bg-white text-green-700 px-2 py-1 rounded font-bold text-xs border border-green-200">{presentIds.length}</span>
+                       <span className="bg-white text-green-700 px-2 py-1 rounded font-bold text-xs flex-shrink-0">{presentIds.length}</span>
                    </div>
 
-                   <div className="flex items-start justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                       <div>
-                           <span className="font-bold text-yellow-800 block mb-1">Sick</span>
-                           <div className="text-xs text-yellow-700 leading-relaxed">
-                               {sickIds.length > 0 ? sickIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None selected'}
+                   <div className="flex items-start justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-100 gap-2">
+                       <div className="min-w-0 flex-1">
+                           <span className="font-bold text-yellow-800 block mb-1 text-xs sm:text-sm">Sick</span>
+                           <div className="text-xs text-yellow-700 line-clamp-2">
+                               {sickIds.length > 0 ? sickIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None'}
                            </div>
                        </div>
-                       <span className="bg-white text-yellow-700 px-2 py-1 rounded font-bold text-xs border border-yellow-200">{sickIds.length}</span>
+                       <span className="bg-white text-yellow-700 px-2 py-1 rounded font-bold text-xs flex-shrink-0">{sickIds.length}</span>
                    </div>
 
-                   <div className="flex items-start justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
-                       <div>
-                           <span className="font-bold text-blue-800 block mb-1">Travelled</span>
-                           <div className="text-xs text-blue-700 leading-relaxed">
-                               {travelledIds.length > 0 ? travelledIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None selected'}
+                   <div className="flex items-start justify-between p-3 bg-blue-50 rounded-lg border border-blue-100 gap-2">
+                       <div className="min-w-0 flex-1">
+                           <span className="font-bold text-blue-800 block mb-1 text-xs sm:text-sm">Travelled</span>
+                           <div className="text-xs text-blue-700 line-clamp-2">
+                               {travelledIds.length > 0 ? travelledIds.map(id => members.find(m => m.id === id)?.fullName).join(', ') : 'None'}
                            </div>
                        </div>
-                       <span className="bg-white text-blue-700 px-2 py-1 rounded font-bold text-xs border border-blue-200">{travelledIds.length}</span>
+                       <span className="bg-white text-blue-700 px-2 py-1 rounded font-bold text-xs flex-shrink-0">{travelledIds.length}</span>
                    </div>
 
                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100">
-                       <span className="font-bold text-gray-600">Absent (Default)</span>
-                       <span className="bg-white text-gray-700 px-2 py-1 rounded font-bold text-xs border border-gray-200">
+                       <span className="font-bold text-gray-600 text-xs sm:text-sm">Absent (Default)</span>
+                       <span className="bg-white text-gray-700 px-2 py-1 rounded font-bold text-xs">
                            {members.length - presentIds.length - sickIds.length - travelledIds.length}
                        </span>
                    </div>
                </div>
                
-               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                   <Button variant="ghost" size="sm" onClick={resetToAbsent} className="text-red-500 hover:bg-red-50 gap-2">
-                       <RefreshCw className="w-4 h-4" /> Reset All
+               <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                   <Button variant="ghost" size="sm" onClick={resetToAbsent} className="text-red-500 hover:bg-red-50 gap-2 text-xs sm:text-sm">
+                       <RefreshCw className="w-4 h-4" /> Reset
                    </Button>
                </div>
            </Card>
 
-           <div className="sticky bottom-6 flex justify-end">
-              <Button onClick={submitAttendance} className="shadow-xl gap-2 w-full md:w-auto" disabled={submitted}>
-                 <Save className="w-4 h-4" /> {submitted ? 'Saved Successfully' : 'Submit Attendance'}
+           <div className="sticky bottom-4 sm:bottom-6 flex justify-end">
+              <Button onClick={submitAttendance} className="shadow-xl gap-2 w-full sm:w-auto text-sm px-4 py-2" disabled={submitted}>
+                 <Save className="w-4 h-4" /> {submitted ? 'Saved' : 'Submit'}
               </Button>
            </div>
         </div>
@@ -775,29 +775,29 @@ Submitted by: ${user.name}
       )}
 
       {activeTab === 'analytics' && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
               {/* Controls */}
-              <div className="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
-                  <span className="text-sm font-bold text-gray-600">Range:</span>
-                  <div className="flex gap-2">
-                      <button onClick={() => setAnalyticsRange('2weeks')} className={`px-3 py-1 rounded-md text-xs font-medium ${analyticsRange === '2weeks' ? 'bg-white shadow text-brand-600' : 'text-gray-500'}`}>2 Weeks</button>
-                      <button onClick={() => setAnalyticsRange('4weeks')} className={`px-3 py-1 rounded-md text-xs font-medium ${analyticsRange === '4weeks' ? 'bg-white shadow text-brand-600' : 'text-gray-500'}`}>4 Weeks</button>
+              <div className="flex justify-between items-center bg-gray-50 p-2 sm:p-3 rounded-lg border border-gray-200 gap-2 text-xs sm:text-sm">
+                  <span className="font-bold text-gray-600">Range:</span>
+                  <div className="flex gap-1 sm:gap-2">
+                      <button onClick={() => setAnalyticsRange('2weeks')} className={`px-2 sm:px-3 py-1 rounded-md text-xs font-medium ${analyticsRange === '2weeks' ? 'bg-white shadow text-brand-600' : 'text-gray-500'}`}>2W</button>
+                      <button onClick={() => setAnalyticsRange('4weeks')} className={`px-2 sm:px-3 py-1 rounded-md text-xs font-medium ${analyticsRange === '4weeks' ? 'bg-white shadow text-brand-600' : 'text-gray-500'}`}>4W</button>
                   </div>
               </div>
 
               {/* Summary Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <Card className="p-4 bg-white border border-gray-200">
-                      <span className="text-xs text-gray-400 uppercase font-bold">Total Sessions</span>
-                      <div className="text-2xl font-bold text-gray-900 mt-1">{stats.totalSessions}</div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                  <Card className="p-3 bg-white border border-gray-200">
+                      <span className="text-xs text-gray-400 uppercase font-bold block">Sessions</span>
+                      <div className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{stats.totalSessions}</div>
                   </Card>
-                  <Card className="p-4 bg-white border border-gray-200">
-                      <span className="text-xs text-gray-400 uppercase font-bold">Avg Present</span>
-                      <div className="text-2xl font-bold text-green-600 mt-1">{stats.avgPresent}</div>
+                  <Card className="p-3 bg-white border border-gray-200">
+                      <span className="text-xs text-gray-400 uppercase font-bold block">Avg Present</span>
+                      <div className="text-xl sm:text-2xl font-bold text-green-600 mt-1">{stats.avgPresent}</div>
                   </Card>
-                   <Card className="p-4 bg-white border border-gray-200">
-                      <span className="text-xs text-gray-400 uppercase font-bold">Attendance Rate</span>
-                      <div className="text-2xl font-bold text-blue-600 mt-1">{stats.rate}%</div>
+                   <Card className="p-3 bg-white border border-gray-200">
+                      <span className="text-xs text-gray-400 uppercase font-bold block">Rate</span>
+                      <div className="text-xl sm:text-2xl font-bold text-blue-600 mt-1">{stats.rate}%</div>
                   </Card>
                    <Card className="p-4 bg-white border border-gray-200">
                       <span className="text-xs text-gray-400 uppercase font-bold">Total Sick</span>
