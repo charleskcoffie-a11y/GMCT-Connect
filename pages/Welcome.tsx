@@ -26,15 +26,15 @@ const Welcome: React.FC = () => {
       <div className="flex-1 flex flex-col px-3 sm:px-6 py-safe z-10 max-w-md mx-auto w-full h-full justify-between">
         
         {/* Header Section (Top) - Identity Emphasis */}
-        <div className="mt-4 sm:mt-8 md:mt-12 text-center animate-in fade-in slide-in-from-top-4 duration-1000 flex-shrink-0 space-y-1 sm:space-y-2 md:space-y-3 px-1">
-           <h1 className="text-[10px] xs:text-xs sm:text-sm font-semibold text-blue-200 tracking-widest uppercase opacity-90 line-clamp-2">
+        <div className="mt-4 sm:mt-8 md:mt-12 text-center animate-in fade-in slide-in-from-top-4 duration-1000 flex-shrink-0 space-y-2 sm:space-y-3 md:space-y-4 px-2">
+           <h1 className="text-[10px] xs:text-xs sm:text-sm font-semibold text-blue-200 tracking-wide uppercase opacity-90 line-clamp-2 leading-normal break-words">
              Ghana Methodist Church – Toronto
            </h1>
-           <div className="space-y-0.5 sm:space-y-1">
-             <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-md leading-tight">
+           <div className="space-y-1 sm:space-y-2">
+             <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight drop-shadow-md leading-snug">
                Welcome Home
              </h2>
-             <p className="text-sm xs:text-base sm:text-lg text-blue-100/90 font-medium">
+             <p className="text-sm xs:text-base sm:text-lg text-blue-100/90 font-medium leading-relaxed">
                We’re glad you’re here.
              </p>
            </div>
