@@ -2,13 +2,18 @@
 import React, { useEffect, useState } from 'react';
 import { ContentService } from '../services/api';
 import { Organization } from '../types';
-import { PageHeader, LoadingScreen } from '../components/UI';
-import { Users, Phone, Clock, MessageSquare, Music, Star, HeartHandshake, Briefcase, Calendar } from 'lucide-react';
+import { PageHeader, LoadingScreen, Card, Button } from '../components/UI';
+import { Users, Phone, Clock, MessageSquare, Music, Star, HeartHandshake, Briefcase, Send } from 'lucide-react';
+import { AdminService } from '../services/api';
 
 const Organizations: React.FC = () => {
   const [orgs, setOrgs] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'All' | 'Men' | 'Women' | 'Youth' | 'Music' | 'Service'>('All');
+  const [activeOrgId, setActiveOrgId] = useState<string | null>(null);
+  const [recipient, setRecipient] = useState<'minister' | 'stewards'>('minister');
+  const [msgLoading, setMsgLoading] = useState(false);
+  const [messageForm, setMessageForm] = useState({ senderName: '', phone: '', text: '' });
 
   useEffect(() => {
     ContentService.getOrganizations().then(data => {
@@ -17,7 +22,17 @@ const Organizations: React.FC = () => {
     });
   }, []);
 
-  const filteredOrgs = filter === 'All' ? orgs : orgs.filter(o => o.category === filter || (filter === 'Service' && o.category === 'General'));
+  const filteredOrgs = filter === 'All'
+    ? orgs
+    : orgs.filter(o => {
+        if (filter === 'Youth') {
+          return ['Children', 'MYF', 'AMB'].includes(o.category as any);
+        }
+        if (filter === 'Service') {
+          return o.category === 'Service' || o.category === 'General';
+        }
+        return o.category === filter;
+      });
 
   // Theme Helper
   const getTheme = (category: string) => {
@@ -37,6 +52,21 @@ const Organizations: React.FC = () => {
                 bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-100', 
                 iconBg: 'bg-amber-100', iconColor: 'text-amber-600', badge: 'bg-amber-100 text-amber-800' 
             };
+          case 'Children':
+            return {
+                bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-100',
+                iconBg: 'bg-amber-100', iconColor: 'text-amber-600', badge: 'bg-amber-100 text-amber-800'
+            };
+          case 'MYF':
+            return {
+                bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-100',
+                iconBg: 'bg-sky-100', iconColor: 'text-sky-600', badge: 'bg-sky-100 text-sky-700'
+            };
+          case 'AMB':
+            return {
+                bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-100',
+                iconBg: 'bg-indigo-100', iconColor: 'text-indigo-600', badge: 'bg-indigo-100 text-indigo-700'
+            };
           case 'Music': 
             return { 
                 bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-100', 
@@ -50,11 +80,14 @@ const Organizations: React.FC = () => {
       }
   };
 
-  const getIcon = (category: string) => {
+    const getIcon = (category: string) => {
       switch(category) {
           case 'Men': return Users;
           case 'Women': return HeartHandshake;
-          case 'Youth': return Star;
+        case 'Youth': return Star;
+        case 'Children': return Star;
+        case 'MYF': return Users;
+        case 'AMB': return Briefcase;
           case 'Music': return Music;
           default: return Briefcase;
       }
@@ -108,29 +141,90 @@ const Organizations: React.FC = () => {
                     {/* Content Section */}
                     <div className="p-6 space-y-4 flex-1">
                         
-                        {/* Leader Highlight Box */}
-                        <div className={`p-4 rounded-xl ${theme.bg} border ${theme.border} flex items-center gap-4 transition-colors`}>
+                        {/* Messaging Controls */}
+                        <div className={`p-4 rounded-xl ${theme.bg} border ${theme.border} space-y-3`}>
+                          <div className="flex items-center gap-3">
                             <div className="bg-white p-2.5 rounded-full shadow-sm">
-                                <Users className={`w-4 h-4 ${theme.iconColor}`} />
+                              <MessageSquare className={`w-4 h-4 ${theme.iconColor}`} />
                             </div>
                             <div className="min-w-0">
-                                <span className={`text-[10px] font-extrabold uppercase block opacity-70 mb-0.5 ${theme.text}`}>Team Lead</span>
-                                <div className="font-bold text-sm text-gray-900 truncate">{org.leaderName}</div>
-                                <a href={`tel:${org.leaderPhone}`} className="text-xs text-gray-500 hover:text-gray-900 flex items-center gap-1.5 mt-1 transition-colors">
-                                    <Phone className="w-3 h-3" /> {org.leaderPhone}
-                                </a>
+                              <span className={`text-[10px] font-extrabold uppercase block opacity-70 mb-0.5 ${theme.text}`}>Send Message</span>
+                              <div className="text-xs text-gray-500">Choose recipient and write your message.</div>
                             </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setRecipient('minister')}
+                              className={`px-3 py-2 text-xs font-bold rounded-lg border ${recipient === 'minister' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-700 border-gray-200'}`}
+                            >
+                              Rev. Minister
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setRecipient('stewards')}
+                              className={`px-3 py-2 text-xs font-bold rounded-lg border ${recipient === 'stewards' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-700 border-gray-200'}`}
+                            >
+                              Society Stewards
+                            </button>
+                          </div>
+
+                          <div className="space-y-2">
+                            <input
+                              className="w-full border rounded-lg p-2 text-sm"
+                              placeholder="Your Name"
+                              value={messageForm.senderName}
+                              onChange={e => setMessageForm({ ...messageForm, senderName: e.target.value })}
+                            />
+                            <input
+                              className="w-full border rounded-lg p-2 text-sm"
+                              placeholder="Phone"
+                              value={messageForm.phone}
+                              onChange={e => setMessageForm({ ...messageForm, phone: e.target.value })}
+                            />
+                            <textarea
+                              className="w-full border rounded-lg p-2 text-sm"
+                              rows={3}
+                              placeholder={`Message regarding ${org.name}...`}
+                              value={messageForm.text}
+                              onChange={e => setMessageForm({ ...messageForm, text: e.target.value })}
+                            />
+
+                            <div className="flex gap-2">
+                              <Button
+                                className="gap-2"
+                                isLoading={msgLoading && activeOrgId === org.id}
+                                onClick={async () => {
+                                  setActiveOrgId(org.id);
+                                  setMsgLoading(true);
+                                  try {
+                                    if (recipient === 'minister') {
+                                      await AdminService.sendMessageToMinister({ ...messageForm });
+                                    } else {
+                                      await AdminService.sendMessageToStewards({ ...messageForm });
+                                    }
+                                    alert('Message sent.');
+                                    setMessageForm({ senderName: '', phone: '', text: '' });
+                                  } finally {
+                                    setMsgLoading(false);
+                                    setActiveOrgId(null);
+                                  }
+                                }}
+                              >
+                                <Send className="w-4 h-4" /> Send
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                onClick={() => setMessageForm({ senderName: '', phone: '', text: '' })}
+                              >
+                                Clear
+                              </Button>
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Meeting Time */}
-                        <div className="flex items-center gap-3 px-1 pt-1">
-                            <div className={`p-1.5 rounded-lg ${theme.bg}`}>
-                                <Clock className={`w-4 h-4 ${theme.iconColor}`} />
-                            </div>
-                            <div className="text-sm font-semibold text-gray-700">
-                                {org.meetingTime}
-                            </div>
-                        </div>
+                        {/* Meeting time intentionally hidden per request */}
                     </div>
 
                     {/* Updates Footer (Conditional) */}

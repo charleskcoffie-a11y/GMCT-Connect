@@ -198,7 +198,7 @@ export interface VisitorSubmission {
 export interface Organization {
   id: string;
   name: string;
-  category: 'Men' | 'Women' | 'Youth' | 'Music' | 'Service' | 'General';
+  category: 'Men' | 'Women' | 'Youth' | 'Children' | 'MYF' | 'AMB' | 'Music' | 'Service' | 'General';
   leaderName: string;
   leaderPhone: string;
   meetingTime: string;

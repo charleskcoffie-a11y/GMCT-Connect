@@ -28,6 +28,7 @@ let STATE = {
   sickReports: [...MockData.SICK_REPORTS],
   members: [...MockData.MOCK_MEMBERS],
   messages: [...MockData.MOCK_MESSAGES],
+  stewardMessages: [] as MinisterMessage[],
   attendance: [] as AttendanceRecord[],
   leaderNotes: [] as LeaderNote[], 
   classMessages: [] as ClassMessage[], 
@@ -120,7 +121,19 @@ export const ContentService = {
     return STATE.services.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   },
 
-  getDevotions: async (): Promise<Devotion[]> => STATE.devotions,
+  getDevotions: async (): Promise<Devotion[]> => {
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    const hasToday = STATE.devotions.some(d => d.date === todayStr);
+    if (!hasToday) {
+      // Auto-generate a devotion for the day so members always see one
+      const auto = await ContentService.generateDevotion();
+      // Ensure the newest remains first
+      STATE.devotions = [auto, ...STATE.devotions];
+    }
+
+    return STATE.devotions;
+  },
   getSermons: async (): Promise<Sermon[]> => STATE.sermons,
   getHymns: async (queryText?: string, book?: string): Promise<Hymn[]> => {
     let filtered = STATE.hymns;
@@ -202,6 +215,17 @@ export const AdminService = {
   sendMessageToMinister: async (msg: Omit<MinisterMessage, 'id' | 'date' | 'isRead'>): Promise<void> => {
     STATE.messages.unshift({
         id: `msg_${Date.now()}`,
+        date: new Date().toISOString(),
+        isRead: false,
+        ...msg
+    });
+  },
+
+  getStewardMessages: async (): Promise<MinisterMessage[]> => STATE.stewardMessages,
+
+  sendMessageToStewards: async (msg: Omit<MinisterMessage, 'id' | 'date' | 'isRead'>): Promise<void> => {
+    STATE.stewardMessages.unshift({
+        id: `stm_${Date.now()}`,
         date: new Date().toISOString(),
         isRead: false,
         ...msg

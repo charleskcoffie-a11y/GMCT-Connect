@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { PageHeader, Card, Button } from '../components/UI';
 import { OutreachService } from '../services/api';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Globe } from 'lucide-react';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -35,8 +35,8 @@ const Contact: React.FC = () => {
                         <Phone className="w-6 h-6 text-brand-200" />
                      </div>
                      <div>
-                        <p className="text-xs font-bold text-brand-300 uppercase">Phone</p>
-                        <p className="font-semibold text-lg">+1 (416) 555-0199</p>
+                           <p className="text-xs font-bold text-brand-300 uppercase">Phone</p>
+                           <p className="font-semibold text-lg">416 743 4555</p>
                      </div>
                   </div>
                   
@@ -46,7 +46,19 @@ const Contact: React.FC = () => {
                      </div>
                      <div>
                         <p className="text-xs font-bold text-brand-300 uppercase">Email</p>
-                        <p className="font-semibold text-lg">info@gmctconnect.org</p>
+                        <p className="font-semibold text-lg">info@gmct-ca.org</p>
+                     </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                     <div className="p-2 bg-white/10 rounded-lg">
+                        <Globe className="w-6 h-6 text-brand-200" />
+                     </div>
+                     <div>
+                        <p className="text-xs font-bold text-brand-300 uppercase">Website</p>
+                        <p className="font-semibold text-lg">
+                          <a href="https://www.gmct-ca.org" target="_blank" rel="noopener noreferrer">www.gmct-ca.org</a>
+                        </p>
                      </div>
                   </div>
 
@@ -55,8 +67,8 @@ const Contact: React.FC = () => {
                         <MapPin className="w-6 h-6 text-brand-200" />
                      </div>
                      <div>
-                        <p className="text-xs font-bold text-brand-300 uppercase">Office Address</p>
-                        <p className="font-semibold text-lg">123 Methodist Lane<br/>Toronto, ON M9V 1A1</p>
+                           <p className="text-xs font-bold text-brand-300 uppercase">Office Address</p>
+                           <p className="font-semibold text-lg">69 Milvan Drive<br/>North York, Ontario, Canada</p>
                      </div>
                   </div>
                </div>
@@ -64,20 +76,16 @@ const Contact: React.FC = () => {
             
             <Card className="p-6">
                 <h4 className="font-bold text-gray-900 mb-2">Office Hours</h4>
-                <div className="space-y-2 text-sm text-gray-600">
-                    <div className="flex justify-between border-b border-gray-100 pb-2">
-                        <span>Monday - Friday</span>
-                        <span className="font-bold">9:00 AM - 5:00 PM</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-100 pb-2">
-                        <span>Saturday</span>
-                        <span className="font-bold">10:00 AM - 2:00 PM</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span>Sunday</span>
-                        <span className="font-bold">Closed (Services Only)</span>
-                    </div>
-                </div>
+               <div className="space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-between border-b border-gray-100 pb-2">
+                     <span>Monday - Friday</span>
+                     <span className="font-bold">9:00 AM - 4:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                     <span>Saturday & Sunday</span>
+                     <span className="font-bold">Closed (Services Only)</span>
+                  </div>
+               </div>
             </Card>
          </div>
 
@@ -119,6 +127,14 @@ const Contact: React.FC = () => {
                </Button>
             </form>
          </Card>
+           <Card className="p-6">
+              <h4 className="font-bold text-gray-900 mb-3">Society Stewards</h4>
+              <ul className="space-y-2 text-sm text-gray-700">
+                 <li>Bro Agyen Frimpong</li>
+                 <li>Bro James Baah</li>
+                 <li>Sis Henrietta Birago</li>
+              </ul>
+           </Card>
       </div>
     </div>
   );

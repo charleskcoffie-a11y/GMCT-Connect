@@ -88,21 +88,21 @@ const NewHere: React.FC = () => {
                             <div className="p-2 bg-red-50 text-red-600 rounded-lg"><Calendar className="w-4 h-4" /></div>
                             <span className="font-semibold text-gray-800">Sunday Service</span>
                          </div>
-                         <span className="font-bold text-gray-900">9:00 AM</span>
+                         <span className="font-bold text-gray-900">10:00 AM - 1:00 PM</span>
                       </div>
                       <div className="flex justify-between items-center p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
                          <div className="flex items-center gap-3">
                             <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><Calendar className="w-4 h-4" /></div>
-                            <span className="font-semibold text-gray-800">Bible Study (Wed)</span>
+                            <span className="font-semibold text-gray-800">Bible Studies (Tue, Zoom)</span>
                          </div>
-                         <span className="font-bold text-gray-900">7:00 PM</span>
+                         <span className="font-bold text-gray-900">8:00 PM</span>
                       </div>
                       <div className="flex justify-between items-center p-3 bg-white border border-gray-100 rounded-lg shadow-sm">
                          <div className="flex items-center gap-3">
                             <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><Calendar className="w-4 h-4" /></div>
                             <span className="font-semibold text-gray-800">Prayer (Fri)</span>
                          </div>
-                         <span className="font-bold text-gray-900">7:00 PM</span>
+                         <span className="font-bold text-gray-900">8:00 PM - 9:30 PM</span>
                       </div>
                    </div>
                 </div>
@@ -114,7 +114,7 @@ const NewHere: React.FC = () => {
                       <MapPin className="w-5 h-5 text-brand-600 mt-1 flex-shrink-0" />
                       <div>
                          <p className="font-semibold text-gray-900">GMCT Main Sanctuary</p>
-                         <p className="text-gray-600 text-sm">123 Methodist Lane, Toronto, ON M9V 1A1</p>
+                         <p className="text-gray-600 text-sm">69 Milvan Drive, North York, Ontario, Canada</p>
                       </div>
                    </div>
                    
@@ -125,13 +125,13 @@ const NewHere: React.FC = () => {
                         frameBorder="0" 
                         scrolling="no" 
                         title="Church Location"
-                        src="https://maps.google.com/maps?q=123+Methodist+Lane,Toronto,ON&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                        src="https://maps.google.com/maps?q=69+Milvan+Drive,North+York,Ontario,Canada&t=&z=14&ie=UTF8&iwloc=&output=embed"
                         className="opacity-80 hover:opacity-100 transition-opacity"
                         style={{ border: 0 }}
                       ></iframe>
                    </div>
                    <a 
-                      href="https://maps.google.com/?q=123+Methodist+Lane,Toronto,ON" 
+                      href="https://maps.google.com/?q=69+Milvan+Drive,North+York,Ontario,Canada" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="block mt-3"

@@ -3,12 +3,15 @@ import { ContentService } from '../services/api';
 import { Devotion } from '../types';
 import { PageHeader, LoadingScreen, Button, Card } from '../components/UI';
 import { Sparkles, ChevronDown, ChevronUp, Share2, BookOpen } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const DevotionPage: React.FC = () => {
   const [devotions, setDevotions] = useState<Devotion[]>([]);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     ContentService.getDevotions().then(data => {
@@ -20,6 +23,7 @@ const DevotionPage: React.FC = () => {
   }, []);
 
   const handleGenerate = async () => {
+    if (!isAdmin) return;
     setGenerating(true);
     try {
       const newDevotion = await ContentService.generateDevotion();
@@ -41,11 +45,11 @@ const DevotionPage: React.FC = () => {
     <div className="max-w-3xl mx-auto">
       <PageHeader 
         title="Daily Devotions" 
-        action={
+        action={isAdmin ? (
           <Button onClick={handleGenerate} isLoading={generating} variant="accent" className="gap-2 shadow-sm border border-accent-600 text-white bg-accent-500 hover:bg-accent-600">
             <Sparkles className="w-4 h-4" /> AI Generate
           </Button>
-        }
+        ) : undefined}
       />
 
       <div className="space-y-4">

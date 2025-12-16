@@ -382,14 +382,15 @@ export const CHURCH_BRANCHES: ChurchBranch[] = [
   {
     id: 'to_main',
     name: 'GMCT Main Sanctuary',
-    address: '123 Methodist Lane, Toronto, ON M9V 1A1',
+    address: '69 Milvan Drive, North York, Ontario, Canada',
     imageUrl: 'https://picsum.photos/seed/churchB1/800/400',
     serviceTimes: [
-      { day: 'Sunday', time: '9:00 AM', label: 'Main Service' },
-      { day: 'Wednesday', time: '7:00 PM', label: 'Bible Study' }
+      { day: 'Sunday', time: '10:00 AM - 1:00 PM', label: 'Main Service' },
+      { day: 'Tuesday', time: '8:00 PM', label: 'Bible Study (Zoom)' },
+      { day: 'Friday', time: '8:00 PM - 9:30 PM', label: 'Prayer Meeting' }
     ],
-    contactPhone: '(416) 555-0101',
-    googleMapsUrl: 'https://maps.google.com/?q=Toronto+City+Hall'
+    contactPhone: '416 743 4555',
+    googleMapsUrl: 'https://maps.google.com/?q=69+Milvan+Drive,North+York,Ontario,Canada'
   },
   {
     id: 'to_north',
@@ -402,7 +403,17 @@ export const CHURCH_BRANCHES: ChurchBranch[] = [
     ],
     contactPhone: '(416) 555-0102',
     googleMapsUrl: 'https://maps.google.com/?q=North+York+City+Centre'
-  }
+  },
+  { id: 'ottawa', name: 'Ottawa Society', address: 'Ottawa, ON', imageUrl: 'https://picsum.photos/seed/ottawa/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Ottawa,ON' },
+  { id: 'montreal', name: 'Montreal Society', address: 'Montreal, QC', imageUrl: 'https://picsum.photos/seed/montreal/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Montreal,QC' },
+  { id: 'brampton', name: 'Brampton Society', address: 'Brampton, ON', imageUrl: 'https://picsum.photos/seed/brampton/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Brampton,ON' },
+  { id: 'hamilton', name: 'Hamilton Society', address: 'Hamilton, ON', imageUrl: 'https://picsum.photos/seed/hamilton/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Hamilton,ON' },
+  { id: 'london', name: 'London Society', address: 'London, ON', imageUrl: 'https://picsum.photos/seed/london/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=London,ON' },
+  { id: 'calgary', name: 'Calgary Society', address: 'Calgary, AB', imageUrl: 'https://picsum.photos/seed/calgary/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Calgary,AB' },
+  { id: 'edmonton', name: 'Edmonton Society', address: 'Edmonton, AB', imageUrl: 'https://picsum.photos/seed/edmonton/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Edmonton,AB' },
+  { id: 'vancouver', name: 'Vancouver Society', address: 'Vancouver, BC', imageUrl: 'https://picsum.photos/seed/vancouver/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Vancouver,BC' },
+  { id: 'thunder_bay', name: 'Thunder Bay Society', address: 'Thunder Bay, ON', imageUrl: 'https://picsum.photos/seed/thunderbay/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: 'https://maps.google.com/?q=Thunder+Bay,ON' },
+  { id: 'st_johns', name: "St. John's Society", address: "St. John's, NL", imageUrl: 'https://picsum.photos/seed/stjohns/800/400', serviceTimes: [], contactPhone: 'Contact via Main Office: 416 743 4555', googleMapsUrl: "https://maps.google.com/?q=St.+John's,NL" }
 ];
 
 export const ORGANIZATIONS: Organization[] = [
@@ -429,7 +440,7 @@ export const ORGANIZATIONS: Organization[] = [
   {
     id: 'org3',
     name: "AMB (Association of Methodist Brigades)",
-    category: 'Service',
+    category: 'AMB',
     leaderName: 'Capt. John Doe',
     leaderPhone: '027 555 6666',
     meetingTime: 'Saturdays @ 3:00 PM',
@@ -468,13 +479,23 @@ export const ORGANIZATIONS: Organization[] = [
   },
   {
     id: 'org7',
-    name: "Youth & Children's Service",
-    category: 'Youth',
-    leaderName: 'Bro. David Ofori',
+    name: "Children's Ministry",
+    category: 'Children',
+    leaderName: 'Sis. Abigail Mensah',
     leaderPhone: '026 456 7890',
     meetingTime: 'Sundays @ 8:00 AM',
-    description: 'Nurturing the next generation in the fear and knowledge of the Lord.',
-    announcements: ['Youth camp registration is open.', 'Children\'s day performance practice.']
+    description: 'Nurturing children in the fear and knowledge of the Lord.',
+    announcements: ["Children's day performance practice."]
+  },
+  {
+    id: 'org7b',
+    name: 'MYF (Methodist Youth Fellowship)',
+    category: 'MYF',
+    leaderName: 'Bro. David Ofori',
+    leaderPhone: '026 456 7890',
+    meetingTime: 'Fridays @ 7:00 PM',
+    description: 'Equipping young adults to grow and serve through fellowship.',
+    announcements: ['Youth camp registration is open.']
   },
   {
     id: 'org8',
