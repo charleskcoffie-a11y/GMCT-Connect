@@ -44,6 +44,7 @@ const Layout: React.FC = () => {
     { to: "/devotion", label: "Devotion", icon: MessageCircle, showInBottom: false },
     { to: "/verse", label: "Daily Verse", icon: BookOpen, showInBottom: false },
     { to: "/sermons", label: "Sermons", icon: Mic2, showInBottom: false },
+    { to: "/wesley-sermons", label: "Wesley Sermons", icon: BookOpen, showInBottom: false },
     { to: "/liturgical", label: "Calendar", icon: Calendar, showInBottom: false },
     { to: "/profile", label: "Profile", icon: UserIcon, showInBottom: false },
   ];

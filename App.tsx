@@ -20,6 +20,7 @@ const Liturgical = React.lazy(() => import('./pages/Liturgical'));
 const SickReports = React.lazy(() => import('./pages/Ministry/SickReports'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const Sermons = React.lazy(() => import('./pages/Sermons'));
+const WesleySermons = React.lazy(() => import('./pages/WesleySermons'));
 const Settings = React.lazy(() => import('./pages/Settings'));
 const NewHere = React.lazy(() => import('./pages/NewHere'));
 const Locations = React.lazy(() => import('./pages/Locations'));
@@ -88,6 +89,7 @@ const App: React.FC = () => {
                 <Route path="/hymnal" element={<Hymnal />} />
                 <Route path="/liturgical" element={<Liturgical />} />
                 <Route path="/sermons" element={<Sermons />} />
+                <Route path="/wesley-sermons" element={<WesleySermons />} />
                 <Route path="/organizations" element={<Organizations />} />
                 
                 <Route path="/attendance" element={<Navigate to="/portal/class-manager" replace />} />

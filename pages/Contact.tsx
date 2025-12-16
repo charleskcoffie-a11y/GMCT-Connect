@@ -23,52 +23,52 @@ const Contact: React.FC = () => {
 
       <div className="grid md:grid-cols-2 gap-8">
          <div className="space-y-6">
-            <Card className="p-6 bg-brand-600 text-white border-none shadow-xl">
-               <h3 className="text-xl font-bold mb-4">Get in Touch</h3>
-               <p className="text-brand-100 mb-8">
+            <Card className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 border-none shadow-xl">
+               <h3 className="text-xl font-bold mb-4 text-gray-900">Get in Touch</h3>
+               <p className="text-gray-900 mb-8">
                   Have questions about our services, ministries, or events? We'd love to hear from you.
                </p>
                
                <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                     <div className="p-2 bg-white/10 rounded-lg">
-                        <Phone className="w-6 h-6 text-brand-200" />
+                     <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <Phone className="w-6 h-6 text-gray-900" />
                      </div>
                      <div>
-                           <p className="text-xs font-bold text-brand-300 uppercase">Phone</p>
-                           <p className="font-semibold text-lg">416 743 4555</p>
+                           <p className="text-xs font-bold text-gray-800 uppercase tracking-wide">Phone</p>
+                           <p className="font-semibold text-lg text-gray-900">416 743 4555</p>
                      </div>
                   </div>
                   
                   <div className="flex items-start gap-4">
-                     <div className="p-2 bg-white/10 rounded-lg">
-                        <Mail className="w-6 h-6 text-brand-200" />
+                     <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <Mail className="w-6 h-6 text-gray-900" />
                      </div>
                      <div>
-                        <p className="text-xs font-bold text-brand-300 uppercase">Email</p>
-                        <p className="font-semibold text-lg">info@gmct-ca.org</p>
+                        <p className="text-xs font-bold text-gray-800 uppercase tracking-wide">Email</p>
+                        <p className="font-semibold text-lg text-gray-900">info@gmct-ca.org</p>
                      </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                     <div className="p-2 bg-white/10 rounded-lg">
-                        <Globe className="w-6 h-6 text-brand-200" />
+                     <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <Globe className="w-6 h-6 text-gray-900" />
                      </div>
                      <div>
-                        <p className="text-xs font-bold text-brand-300 uppercase">Website</p>
-                        <p className="font-semibold text-lg">
+                        <p className="text-xs font-bold text-gray-800 uppercase tracking-wide">Website</p>
+                        <p className="font-semibold text-lg text-gray-900">
                           <a href="https://www.gmct-ca.org" target="_blank" rel="noopener noreferrer">www.gmct-ca.org</a>
                         </p>
                      </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                     <div className="p-2 bg-white/10 rounded-lg">
-                        <MapPin className="w-6 h-6 text-brand-200" />
+                     <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm">
+                        <MapPin className="w-6 h-6 text-gray-900" />
                      </div>
                      <div>
-                           <p className="text-xs font-bold text-brand-300 uppercase">Office Address</p>
-                           <p className="font-semibold text-lg">69 Milvan Drive<br/>North York, Ontario, Canada</p>
+                           <p className="text-xs font-bold text-gray-800 uppercase tracking-wide">Office Address</p>
+                           <p className="font-semibold text-lg text-gray-900">69 Milvan Drive<br/>North York, Ontario, Canada</p>
                      </div>
                   </div>
                </div>

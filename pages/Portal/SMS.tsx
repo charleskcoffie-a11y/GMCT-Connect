@@ -19,6 +19,70 @@ const SMS: React.FC = () => {
   const [body, setBody] = useState('');
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set());
 
+  // Message templates
+  const templates = [
+    {
+      id: 'service-sunday',
+      name: 'Sunday Service Reminder',
+      subject: 'Sunday Service Today',
+      body: 'Good morning! Join us for worship service today at 10:00 AM. All are welcome. God bless you.'
+    },
+    {
+      id: 'service-midweek',
+      name: 'Midweek Service',
+      subject: 'Midweek Service Tonight',
+      body: 'Good evening! We invite you to our midweek service tonight at 6:00 PM. Come and be refreshed in the Word.'
+    },
+    {
+      id: 'bereavement',
+      name: 'Bereavement Notice',
+      subject: 'Bereavement Announcement',
+      body: 'Dear church family, it is with sadness that we announce the passing of [Name]. Funeral details to follow. Please keep the family in your prayers.'
+    },
+    {
+      id: 'special-event',
+      name: 'Special Event',
+      subject: 'Special Program Invitation',
+      body: 'You are cordially invited to our special program on [Date] at [Time]. Join us for a blessed time of fellowship and worship.'
+    },
+    {
+      id: 'church-meeting',
+      name: 'Church Meeting',
+      subject: 'Church Meeting Reminder',
+      body: 'Reminder: Church meeting scheduled for [Date] at [Time]. Your attendance is important. See you there!'
+    },
+    {
+      id: 'prayer-request',
+      name: 'Prayer Call',
+      subject: 'Prayer Request',
+      body: 'Dear members, please join us in prayer for [specific need]. Let us stand together in faith and intercession.'
+    },
+    {
+      id: 'fundraiser',
+      name: 'Fundraising Event',
+      subject: 'Fundraising Event',
+      body: 'Support our church fundraiser on [Date]. Your participation and generosity are greatly appreciated. Thank you!'
+    },
+    {
+      id: 'communion',
+      name: 'Communion Service',
+      subject: 'Communion Service',
+      body: 'Holy Communion will be celebrated this Sunday at 10:00 AM. Prepare your hearts to partake in this sacred ordinance.'
+    },
+    {
+      id: 'youth-event',
+      name: 'Youth Event',
+      subject: 'Youth Program',
+      body: 'Calling all youth! Join us for an exciting program on [Date] at [Time]. Bring a friend and be blessed!'
+    },
+    {
+      id: 'custom',
+      name: 'Start from Scratch',
+      subject: '',
+      body: ''
+    }
+  ];
+
   // Access Control
   useEffect(() => {
     const allowedRoles = ['admin', 'rev_minister', 'society_steward'];
@@ -133,6 +197,34 @@ const SMS: React.FC = () => {
           </Card>
 
           <Card className="p-6 space-y-5">
+            {/* Template Selector */}
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">
+                Message Template
+              </label>
+              <select
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => {
+                  const template = templates.find(t => t.id === e.target.value);
+                  if (template) {
+                    setSubject(template.subject);
+                    setBody(template.body);
+                  }
+                }}
+                defaultValue=""
+              >
+                <option value="" disabled>Choose a template or start from scratch...</option>
+                {templates.map(template => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500 mt-1.5">
+                Select a pre-made template and edit as needed, or choose "Start from Scratch"
+              </p>
+            </div>
+
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-2">Subject Line</label>
               <input
