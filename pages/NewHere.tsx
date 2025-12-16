@@ -154,7 +154,7 @@ const NewHere: React.FC = () => {
                    <Clock className="w-5 h-5 text-brand-500 flex-shrink-0" />
                    <div>
                       <h4 className="font-bold text-gray-900 text-sm">Service Duration</h4>
-                      <p className="text-sm text-gray-600">Our services typically last about 90 minutes, filled with worship, prayer, and teaching.</p>
+                      <p className="text-sm text-gray-600">Our services typically last about two and a half hours (2½ hours), filled with worship, prayer, and teaching.</p>
                    </div>
                 </div>
                 <div className="flex gap-3">

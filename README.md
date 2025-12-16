@@ -165,3 +165,37 @@ Stores notes sent from Class Leaders to Ministers.
 
 #### **Collection: `prayer_requests`**
 *   **Fields:** `requesterName`, `phone`, `content`, `status` (New/In-Progress/Closed), `isAnonymous` (boolean).
+
+---
+
+## 📱 PWA & Mobile
+
+### PWA (Offline & Installable)
+- Status: Enabled via `vite-plugin-pwa`.
+- Offline caching for HTML, JS/CSS, and images is configured.
+- Service worker auto-updates.
+
+Try it locally:
+```bash
+npm run build
+npm run preview
+# Open http://localhost:4173 and "Install" from the browser menu
+```
+
+### Capacitor (Android/iOS Packaging)
+Scaffold steps (optional):
+```bash
+npm install @capacitor/core @capacitor/cli --save-dev
+npx cap init gmct-connect "GMCT Connect"
+npx cap add android
+npx cap add ios
+npm run build
+npx cap copy
+npx cap open android   # or: npx cap open ios
+```
+
+Config file: see `capacitor.config.ts` (already added). Ensure `webDir: 'dist'` is built before copying.
+
+Notes:
+- For push notifications, you’ll need a backend using Web Push (VAPID) or Firebase Cloud Messaging.
+- During development, set an appropriate `server.url` if you want live-reload inside the native shells.

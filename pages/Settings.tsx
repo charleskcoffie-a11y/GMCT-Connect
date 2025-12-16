@@ -2,14 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeader, Card, Button } from '../components/UI';
 import { useSettings } from '../context/SettingsContext';
-import { Upload, Users, Moon, Sun, Image as ImageIcon, Trash2, List } from 'lucide-react';
+import { Upload, Users, Moon, Sun, Image as ImageIcon, Trash2, List, Bell } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { requestNotificationPermission, showLocalNotification } from '../services/notifications';
 
 const Settings: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { logoUrl, updateLogo, maxClasses, updateMaxClasses } = useSettings();
+  const { logoUrl, updateLogo, maxClasses, updateMaxClasses, notificationsEnabled, setNotificationsEnabled } = useSettings();
   const [theme, setTheme] = useState('light');
   const [localMaxClasses, setLocalMaxClasses] = useState(maxClasses);
 
@@ -96,6 +97,39 @@ const Settings: React.FC = () => {
                     </div>
 
                     <div className="h-px bg-gray-100 dark:bg-gray-800 w-full" />
+
+                    {/* Notifications Toggle */}
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            <Bell className="w-5 h-5 text-brand-600" />
+                            <span className="font-medium text-gray-900 dark:text-gray-200">Enable Notifications</span>
+                        </div>
+                        <label className="inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={notificationsEnabled}
+                            onChange={async (e) => {
+                              const enabled = e.target.checked;
+                              if (enabled) {
+                                const permission = await requestNotificationPermission();
+                                if (permission !== 'granted') {
+                                  alert('Notifications denied or unavailable.');
+                                  return;
+                                } else {
+                                  setNotificationsEnabled(true);
+                                  showLocalNotification('Notifications enabled', { body: 'You will receive updates.' });
+                                }
+                              } else {
+                                setNotificationsEnabled(false);
+                              }
+                            }}
+                          />
+                          <span className="ml-2 w-12 h-6 bg-gray-200 peer-checked:bg-brand-600 rounded-full relative transition-colors">
+                            <span className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-6" />
+                          </span>
+                        </label>
+                    </div>
 
                     {/* Logo Upload */}
                     <div>
