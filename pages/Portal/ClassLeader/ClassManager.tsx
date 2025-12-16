@@ -4,11 +4,11 @@ import { useAuth } from '../../../context/AuthContext';
 import { ClassService } from '../../../services/api';
 import { Member, ClassMessage, AttendanceStatus, DayType, AttendanceRecord } from '../../../types';
 import { PageHeader, Card, Button, Badge, LoadingScreen, MultiSelectListBox } from '../../../components/UI';
-import { Search, CheckCircle, XCircle, Save, Calendar, Users, Lock, Send, MessageSquare, Mail, Check, AlertTriangle, Plane, Stethoscope, ClipboardList, BarChart2, RefreshCw, History, Edit2, ChevronRight } from 'lucide-react';
+import { Search, CheckCircle, XCircle, Save, Calendar, Users, Lock, Send, MessageSquare, Mail, Check, AlertTriangle, Plane, Stethoscope, ClipboardList, BarChart2, RefreshCw, History, Edit2, ChevronRight, Download } from 'lucide-react';
 
 const ClassManager: React.FC = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'members' | 'attendance' | 'history' | 'analytics' | 'followup' | 'inbox'>('members');
+  const [activeTab, setActiveTab] = useState<'members' | 'attendance' | 'history' | 'analytics' | 'followup' | 'reports' | 'inbox'>('members');
   const [members, setMembers] = useState<Member[]>([]);
   const [followUpList, setFollowUpList] = useState<Member[]>([]);
   const [messages, setMessages] = useState<ClassMessage[]>([]);
@@ -40,6 +40,14 @@ const ClassManager: React.FC = () => {
   const [noteMessage, setNoteMessage] = useState('');
   const [noteSending, setNoteSending] = useState(false);
 
+  // Reports State (Auto-flagged members for 30+ and 90+ days)
+  const [flaggedThirty, setFlaggedThirty] = useState<Member[]>([]);
+  const [flaggedNinety, setFlaggedNinety] = useState<Member[]>([]);
+  const [selectedThirty, setSelectedThirty] = useState<string[]>([]);
+  const [selectedNinety, setSelectedNinety] = useState<string[]>([]);
+  const [reportSending, setReportSending] = useState(false);
+  const [smsNotifyEnabled, setSmsNotifyEnabled] = useState(false);
+
   useEffect(() => {
     if (user?.role === 'class_leader' && !user.classId) {
         setNeedsAccess(true);
@@ -64,6 +72,13 @@ const ClassManager: React.FC = () => {
           loadHistory();
       }
   }, [activeTab, analyticsRange]);
+
+  // Calculate flagged members when Reports tab is active
+  useEffect(() => {
+      if (user?.classId && activeTab === 'reports') {
+          calculateFlaggedMembers();
+      }
+  }, [activeTab]);
 
   const loadInitialData = async () => {
       if (!user?.classId) return;
@@ -254,6 +269,121 @@ const ClassManager: React.FC = () => {
       setLoading(false);
   };
 
+  // Calculate flagged members based on attendance history
+  const calculateFlaggedMembers = async () => {
+      if (!user?.classId) return;
+      
+      const records = await ClassService.getAttendanceHistory(user.classId);
+      const now = new Date();
+      const thirtyDaysAgo = new Date(now.setDate(now.getDate() - 30));
+      const ninetyDaysAgo = new Date(now.setDate(now.getDate() - 90));
+
+      const thirty: Set<string> = new Set();
+      const ninety: Set<string> = new Set();
+
+      // Mark members as absent if last attendance is before threshold
+      members.forEach(member => {
+          const lastAttended = member.lastAttended ? new Date(member.lastAttended) : null;
+          
+          if (!lastAttended || lastAttended < ninetyDaysAgo) {
+              ninety.add(member.id);
+          } else if (!lastAttended || lastAttended < thirtyDaysAgo) {
+              thirty.add(member.id);
+          }
+      });
+
+      setFlaggedThirty(members.filter(m => thirty.has(m.id)));
+      setFlaggedNinety(members.filter(m => ninety.has(m.id)));
+      
+      // Auto-select all flagged for confirmation
+      setSelectedThirty(Array.from(thirty));
+      setSelectedNinety(Array.from(ninety));
+  };
+
+  // Send flagged members report to Minister and Stewards
+  const sendFlaggedReport = async () => {
+      if (!user?.classId) return;
+      
+      const reportMessage = `
+Flagged Members Report from ${user.className}
+
+30-Day Absent (Not seen in 30 days):
+${selectedThirty.map(id => members.find(m => m.id === id)?.fullName).filter(Boolean).join('\n') || 'None'}
+
+90-Day Absent / See to Meet List (Not seen in 90 days):
+${selectedNinety.map(id => members.find(m => m.id === id)?.fullName).filter(Boolean).join('\n') || 'None'}
+
+Total flagged: ${selectedThirty.length + selectedNinety.length} members
+Submitted by: ${user.name}
+      `.trim();
+
+      setReportSending(true);
+      try {
+          await AdminService.sendMessageToMinister({
+              senderName: user.name,
+              phone: user.phoneNumber || '',
+              text: reportMessage
+          });
+          await AdminService.sendMessageToStewards({
+              senderName: user.name,
+              phone: user.phoneNumber || '',
+              text: reportMessage
+          });
+
+          // Send SMS if enabled
+          if (smsNotifyEnabled) {
+              const flaggedNames = [
+                  ...selectedThirty.map(id => members.find(m => m.id === id)?.fullName).filter(Boolean),
+                  ...selectedNinety.map(id => members.find(m => m.id === id)?.fullName).filter(Boolean)
+              ];
+              const smsText = `GMCT: Flagged Members Report from ${user.className} - ${flaggedNames.length} members need follow-up. Review in app for details.`;
+              
+              // Mock SMS to stewards (would be sent via Twilio API in production)
+              await AdminService.sendSmsToStewards({
+                  senderName: user.name,
+                  message: smsText
+              });
+          }
+
+          alert('Report sent to Rev. Minister and Stewards' + (smsNotifyEnabled ? ' (+ SMS)' : '') + '.');
+          setSelectedThirty([]);
+          setSelectedNinety([]);
+          setSmsNotifyEnabled(false);
+      } finally {
+          setReportSending(false);
+      }
+  };
+
+  // Export flagged members as CSV
+  const exportAsCSV = () => {
+      const headers = ['Name', 'Class Number', 'Phone', 'Last Attended', 'Days Absent'];
+      const rows = [
+          ...selectedThirty.map(id => {
+              const m = members.find(mem => mem.id === id);
+              const daysAbsent = m?.lastAttended ? Math.floor((Date.now() - new Date(m.lastAttended).getTime()) / (1000 * 60 * 60 * 24)) : 'Unknown';
+              return [m?.fullName, m?.classNumber, m?.phone, m?.lastAttended || 'Never', daysAbsent];
+          }),
+          ...selectedNinety.map(id => {
+              const m = members.find(mem => mem.id === id);
+              const daysAbsent = m?.lastAttended ? Math.floor((Date.now() - new Date(m.lastAttended).getTime()) / (1000 * 60 * 60 * 24)) : 'Unknown';
+              return [m?.fullName, m?.classNumber, m?.phone, m?.lastAttended || 'Never', daysAbsent];
+          })
+      ];
+
+      const csv = [
+          headers.join(','),
+          ...rows.map(r => r.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `flagged-members-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+  };
+
   const getAnalyticsSummary = () => {
       let totalSessions = history.length;
       let totalPresent = 0;
@@ -373,6 +503,15 @@ const ClassManager: React.FC = () => {
           <ClipboardList className="w-4 h-4" /> Follow-Up
           {followUpList.length > 0 && (
              <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{followUpList.length}</span>
+          )}
+        </button>
+        <button 
+          onClick={() => setActiveTab('reports')}
+          className={`px-6 py-3 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${activeTab === 'reports' ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          <BarChart2 className="w-4 h-4" /> Reports
+          {(flaggedThirty.length + flaggedNinety.length) > 0 && (
+             <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1">{flaggedThirty.length + flaggedNinety.length}</span>
           )}
         </button>
         <button 
@@ -758,7 +897,168 @@ const ClassManager: React.FC = () => {
           </div>
       )}
 
-      {activeTab === 'inbox' && (
+      {activeTab === 'followup' && (
+          <div className="space-y-4">
+              {followUpList.length === 0 ? (
+                  <div className="text-center py-16 bg-white border border-gray-200 rounded-xl">
+                      <CheckCircle className="w-12 h-12 text-green-200 mx-auto mb-3" />
+                      <h3 className="font-bold text-gray-900">All caught up!</h3>
+                      <p className="text-gray-500 text-sm">No members are currently flagged for follow-up (Absent &gt; 28 days).</p>
+                  </div>
+              ) : (
+                  <>
+                    <Card className="bg-orange-50 border-orange-200 p-4 flex gap-3">
+                        <AlertTriangle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                        <div>
+                            <h4 className="font-bold text-orange-800">Review Needed</h4>
+                            <p className="text-sm text-orange-700">These members have been absent for 4+ consecutive weeks. Confirm their status to remove them from this list.</p>
+                        </div>
+                    </Card>
+
+                    {followUpList.map(member => (
+                        <Card key={member.id} className="p-5 border-l-4 border-l-orange-500">
+                            <div className="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 className="font-bold text-lg text-gray-900">{member.fullName}</h3>
+                                    <p className="text-xs text-gray-500">#{member.classNumber} • {member.phone}</p>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-xs font-bold text-gray-400 uppercase">Last Seen</div>
+                                    <div className="text-sm font-semibold text-gray-700">
+                                        {member.lastAttended ? new Date(member.lastAttended).toLocaleDateString() : 'Never'}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-2 pt-3 border-t border-gray-100">
+                                <Button size="sm" variant="outline" className="text-yellow-700 border-yellow-200 bg-yellow-50 hover:bg-yellow-100 text-xs px-2" onClick={() => handleFollowUpAction(member.id, 'Sick')}>
+                                    Confirm Sick
+                                </Button>
+                                <Button size="sm" variant="outline" className="text-blue-700 border-blue-200 bg-blue-50 hover:bg-blue-100 text-xs px-2" onClick={() => handleFollowUpAction(member.id, 'Travelled')}>
+                                    Confirm Travel
+                                </Button>
+                                <Button size="sm" variant="outline" className="text-gray-700 border-gray-200 bg-gray-50 hover:bg-gray-100 text-xs px-2" onClick={() => handleFollowUpAction(member.id, 'Resolved')}>
+                                    Still Absent
+                                </Button>
+                            </div>
+                        </Card>
+                    ))}
+                  </>
+              )}
+          </div>
+      )}
+
+      {activeTab === 'reports' && (
+          <div className="space-y-6">
+              <Card className="bg-blue-50 border-blue-200 p-4 flex gap-3">
+                  <AlertTriangle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                      <h4 className="font-bold text-blue-800">Flagged Members Report</h4>
+                      <p className="text-sm text-blue-700">Members are automatically flagged if not seen in 30+ days (escalates to 90+ days for See to Meet). Review, edit if needed, and send to Rev. Minister & Stewards.</p>
+                  </div>
+              </Card>
+
+              {flaggedThirty.length === 0 && flaggedNinety.length === 0 ? (
+                  <div className="text-center py-16 bg-white border border-gray-200 rounded-xl">
+                      <CheckCircle className="w-12 h-12 text-green-200 mx-auto mb-3" />
+                      <h3 className="font-bold text-gray-900">No flagged members</h3>
+                      <p className="text-gray-500 text-sm">All members have attended within the last 30 days.</p>
+                  </div>
+              ) : (
+                  <>
+                    {/* 30-Day Flagged */}
+                    {flaggedThirty.length > 0 && (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                                <h3 className="font-bold text-gray-900">30-Day Absent ({selectedThirty.length}/{flaggedThirty.length})</h3>
+                            </div>
+                            <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-2 max-h-64 overflow-y-auto">
+                                {flaggedThirty.map(member => (
+                                    <label key={member.id} className="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                                        <input 
+                                            type="checkbox"
+                                            checked={selectedThirty.includes(member.id)}
+                                            onChange={e => {
+                                                if (e.target.checked) {
+                                                    setSelectedThirty([...selectedThirty, member.id]);
+                                                } else {
+                                                    setSelectedThirty(selectedThirty.filter(id => id !== member.id));
+                                                }
+                                            }}
+                                            className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-900">{member.fullName}</p>
+                                            <p className="text-xs text-gray-500">#{member.classNumber} • Last: {member.lastAttended ? new Date(member.lastAttended).toLocaleDateString() : 'Never'}</p>
+                                        </div>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 90-Day / See to Meet */}
+                    {flaggedNinety.length > 0 && (
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="w-5 h-5 text-red-600" />
+                                <h3 className="font-bold text-gray-900">See to Meet (90+ Days) ({selectedNinety.length}/{flaggedNinety.length})</h3>
+                            </div>
+                            <div className="bg-white rounded-xl border border-red-200 p-4 space-y-2 max-h-64 overflow-y-auto">
+                                {flaggedNinety.map(member => (
+                                    <label key={member.id} className="flex items-center gap-3 p-2 rounded hover:bg-red-50 cursor-pointer">
+                                        <input 
+                                            type="checkbox"
+                                            checked={selectedNinety.includes(member.id)}
+                                            onChange={e => {
+                                                if (e.target.checked) {
+                                                    setSelectedNinety([...selectedNinety, member.id]);
+                                                } else {
+                                                    setSelectedNinety(selectedNinety.filter(id => id !== member.id));
+                                                }
+                                            }}
+                                            className="w-4 h-4 rounded border-gray-300 cursor-pointer"
+                                        />
+                                        <div>
+                                            <p className="text-sm font-semibold text-gray-900">{member.fullName}</p>
+                                            <p className="text-xs text-gray-500">#{member.classNumber} • Last: {member.lastAttended ? new Date(member.lastAttended).toLocaleDateString() : 'Never'}</p>
+                                        </div>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Send Button */}
+                    <div className="sticky bottom-6 flex justify-end gap-2">
+                        <Button variant="outline" onClick={exportAsCSV} className="gap-2">
+                            <Download className="w-4 h-4" /> Export CSV
+                        </Button>
+                        <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg border border-gray-200">
+                            <input 
+                                type="checkbox"
+                                checked={smsNotifyEnabled}
+                                onChange={e => setSmsNotifyEnabled(e.target.checked)}
+                                className="w-4 h-4 rounded cursor-pointer"
+                            />
+                            <label className="text-sm font-medium text-gray-700 cursor-pointer">SMS to Stewards</label>
+                        </div>
+                        <Button 
+                            isLoading={reportSending}
+                            onClick={sendFlaggedReport}
+                            disabled={selectedThirty.length === 0 && selectedNinety.length === 0}
+                            className="gap-2 shadow-xl"
+                        >
+                            <Send className="w-4 h-4" /> Send Report ({selectedThirty.length + selectedNinety.length})
+                        </Button>
+                    </div>
+                  </>
+              )}
+          </div>
+      )}
+
+      {activeTab === 'messages' && (
           <div className="space-y-4">
               {messages.length === 0 && (
                   <div className="text-center py-12 text-gray-400 bg-white border border-gray-200 rounded-xl">

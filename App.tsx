@@ -35,6 +35,7 @@ const StewardDashboard = React.lazy(() => import('./pages/Portal/Steward/Steward
 const PrayerRequestForm = React.lazy(() => import('./pages/Portal/Forms/PrayerRequestForm'));
 const MessageMinisterForm = React.lazy(() => import('./pages/Portal/Forms/MessageMinisterForm'));
 const MessageLeaderForm = React.lazy(() => import('./pages/Portal/Forms/MessageLeaderForm'));
+const SMS = React.lazy(() => import('./pages/Portal/SMS'));
 
 const App: React.FC = () => {
   // Initialize Theme
@@ -76,6 +77,7 @@ const App: React.FC = () => {
                   <Route path="prayer-request" element={<PrayerRequestForm />} />
                   <Route path="message-minister" element={<MessageMinisterForm />} />
                   <Route path="message-leader" element={<MessageLeaderForm />} />
+                  <Route path="sms" element={<SMS />} />
                 </Route>
 
                 <Route path="/announcements" element={<Announcements />} />

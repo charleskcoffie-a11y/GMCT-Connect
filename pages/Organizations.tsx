@@ -11,7 +11,6 @@ const Organizations: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'All' | 'Men' | 'Women' | 'Youth' | 'Music' | 'Service'>('All');
   const [activeOrgId, setActiveOrgId] = useState<string | null>(null);
-  const [recipient, setRecipient] = useState<'minister' | 'stewards'>('minister');
   const [msgLoading, setMsgLoading] = useState(false);
   const [messageForm, setMessageForm] = useState({ senderName: '', phone: '', text: '' });
 
@@ -148,25 +147,8 @@ const Organizations: React.FC = () => {
                             </div>
                             <div className="min-w-0">
                               <span className={`text-[10px] font-extrabold uppercase block opacity-70 mb-0.5 ${theme.text}`}>Send Message</span>
-                              <div className="text-xs text-gray-500">Choose recipient and write your message.</div>
+                              <div className="text-xs text-gray-500">Message to Rev. Minister & Stewards</div>
                             </div>
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-2">
-                            <button
-                              type="button"
-                              onClick={() => setRecipient('minister')}
-                              className={`px-3 py-2 text-xs font-bold rounded-lg border ${recipient === 'minister' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-700 border-gray-200'}`}
-                            >
-                              Rev. Minister
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => setRecipient('stewards')}
-                              className={`px-3 py-2 text-xs font-bold rounded-lg border ${recipient === 'stewards' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-700 border-gray-200'}`}
-                            >
-                              Society Stewards
-                            </button>
                           </div>
 
                           <div className="space-y-2">
@@ -198,12 +180,9 @@ const Organizations: React.FC = () => {
                                   setActiveOrgId(org.id);
                                   setMsgLoading(true);
                                   try {
-                                    if (recipient === 'minister') {
-                                      await AdminService.sendMessageToMinister({ ...messageForm });
-                                    } else {
-                                      await AdminService.sendMessageToStewards({ ...messageForm });
-                                    }
-                                    alert('Message sent.');
+                                    await AdminService.sendMessageToMinister({ ...messageForm });
+                                    await AdminService.sendMessageToStewards({ ...messageForm });
+                                    alert('Message sent to Rev. Minister and Stewards.');
                                     setMessageForm({ senderName: '', phone: '', text: '' });
                                   } finally {
                                     setMsgLoading(false);

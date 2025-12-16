@@ -73,6 +73,48 @@ const Contact: React.FC = () => {
                   </div>
                </div>
             </Card>
+
+            <Card className="p-6">
+              <h4 className="font-bold text-gray-900 mb-4">Follow Us</h4>
+              <div className="space-y-3">
+                <a
+                  href="https://www.youtube.com/@GMCT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-red-50 hover:bg-red-100 border border-red-100 transition-colors"
+                >
+                  <span className="font-bold text-red-700">▶</span>
+                  <div>
+                    <p className="text-xs font-bold text-red-600 uppercase">YouTube</p>
+                    <p className="text-sm text-red-700 font-medium">GMCT</p>
+                  </div>
+                </a>
+                <a
+                  href="https://www.facebook.com/GMCT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-100 transition-colors"
+                >
+                  <span className="font-bold text-blue-700">f</span>
+                  <div>
+                    <p className="text-xs font-bold text-blue-600 uppercase">Facebook</p>
+                    <p className="text-sm text-blue-700 font-medium">GMCT</p>
+                  </div>
+                </a>
+                <a
+                  href="https://www.tiktok.com/@GMCT"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-black/5 hover:bg-black/10 border border-gray-200 transition-colors"
+                >
+                  <span className="font-bold text-gray-900">♪</span>
+                  <div>
+                    <p className="text-xs font-bold text-gray-600 uppercase">TikTok</p>
+                    <p className="text-sm text-gray-900 font-medium">GMCT</p>
+                  </div>
+                </a>
+              </div>
+            </Card>
             
             <Card className="p-6">
                 <h4 className="font-bold text-gray-900 mb-2">Office Hours</h4>

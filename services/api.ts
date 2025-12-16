@@ -232,6 +232,21 @@ export const AdminService = {
     });
   },
 
+  sendSmsToStewards: async (data: { senderName: string; message: string }): Promise<void> => {
+    // Mock SMS send to stewards
+    // In production, integrate with Twilio/AWS SNS
+    console.log('SMS to Stewards from ' + data.senderName + ':', data.message);
+    // Store as a message for tracking
+    STATE.stewardMessages.unshift({
+        id: `sms_${Date.now()}`,
+        senderName: data.senderName,
+        phone: 'SMS',
+        text: data.message,
+        date: new Date().toISOString(),
+        isRead: false
+    });
+  },
+
   markMessageRead: async (id: string): Promise<void> => {
     STATE.messages = STATE.messages.map(m => m.id === id ? { ...m, isRead: true } : m);
   },
@@ -449,5 +464,28 @@ export const OutreachService = {
       return;
     }
     console.log("Contact Msg:", data);
+  }
+};
+
+// --- SMS Service ---
+export const SmsService = {
+  sendBulkSms: async (recipientPhones: string[], message: string, sender: string): Promise<void> => {
+    // In production, integrate with Twilio, AWS SNS, or similar
+    // For now, mock the send
+    console.log(`SMS from ${sender}:`, {
+      recipients: recipientPhones.length,
+      message,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Mock: store in state for admin dashboard
+    STATE.announcements.unshift({
+      id: `sms_${Date.now()}`,
+      title: 'SMS Broadcast',
+      content: message,
+      category: 'General',
+      date: new Date().toISOString(),
+      isFeatured: false
+    } as Announcement);
   }
 };

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { 
   ClipboardCheck, Users, HeartHandshake, Mail, 
   ShieldCheck, ArrowRight, MessageSquare, Calendar,
-  User, Star, BookOpen, Clock
+  User, Star, BookOpen, Clock, MessageCircle
 } from 'lucide-react';
 
 const PortalHome: React.FC = () => {
@@ -105,7 +105,97 @@ const PortalHome: React.FC = () => {
                   </div>
                 </Card>
               </Link>
+
+              <Link to="/portal/sms" className="group">
+                <Card className="p-6 h-full hover:border-purple-500 transition-all hover:shadow-lg bg-white dark:bg-slate-800 border-l-4 border-l-purple-500">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl">
+                      <MessageCircle className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">Bulk SMS</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">Announcements & Alerts</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-purple-600 font-medium group-hover:translate-x-1 transition-transform">
+                    <span className="text-sm">Send Message</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Card>
+              </Link>
             </div>
+          </section>
+        )}
+
+        {/* === SOCIETY STEWARD PORTAL === */}
+        {user.role === 'society_steward' && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-amber-600" /> Steward Tools
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Link to="/portal/steward" className="group">
+                <Card className="p-6 h-full hover:border-amber-600 transition-all hover:shadow-lg bg-white dark:bg-slate-800 border-l-4 border-l-amber-600">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-xl">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">Dashboard</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">Announcements & Updates</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-amber-600 font-medium group-hover:translate-x-1 transition-transform">
+                    <span className="text-sm">View Dashboard</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Card>
+              </Link>
+
+              <Link to="/portal/sms" className="group">
+                <Card className="p-6 h-full hover:border-purple-500 transition-all hover:shadow-lg bg-white dark:bg-slate-800 border-l-4 border-l-purple-500">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl">
+                      <MessageCircle className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">Bulk SMS</h3>
+                      <p className="text-gray-500 dark:text-gray-400 text-sm">Announcements & Alerts</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center text-purple-600 font-medium group-hover:translate-x-1 transition-transform">
+                    <span className="text-sm">Send Message</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </Card>
+              </Link>
+            </div>
+          </section>
+        )}
+
+        {/* === ADMIN PORTAL === */}
+        {user.role === 'admin' && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-red-600" /> Admin Tools
+            </h2>
+            <Link to="/portal/sms" className="group">
+              <Card className="p-6 h-full hover:border-purple-500 transition-all hover:shadow-lg bg-white dark:bg-slate-800 border-l-4 border-l-purple-500">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-xl">
+                    <MessageCircle className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Bulk SMS</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Send announcements to all members</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center text-purple-600 font-medium group-hover:translate-x-1 transition-transform">
+                  <span className="text-sm">Send Message</span>
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </Card>
+            </Link>
           </section>
         )}
 
